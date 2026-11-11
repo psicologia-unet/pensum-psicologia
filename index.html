@@ -1,0 +1,1170 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Pensum Psicología UNET</title>
+<meta name="description" content="Marca tus materias aprobadas de Psicología UNET y descubre qué inscribir según las prelaciones.">
+<meta name="theme-color" content="#100D18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pensum Psico">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500..800;1,9..144,500..700&family=Figtree:wght@400;500;600;700&family=DM+Mono:wght@500&display=swap">
+<style>
+/* Layout: app móvil de una columna (máx. 760px) sobre un fondo oscuro de "la mente": neuronas con dendritas y axones
+   por donde viajan impulsos pastel (sinapsis) y, abajo, dos personas conversando con alguna burbuja de pensamiento.
+   Tarjetas oscuras translúcidas, acentos pastel, títulos en serif suave (Fraunces) */
+:root{
+  --bg:#100D18; --surface:rgba(27,22,39,.92); --surface-2:#251E36; --sunk:rgba(12,10,19,.62);
+  --ink:#F2EDF8; --muted:#A99FBA; --line:rgba(196,178,255,.12); --line-strong:rgba(196,178,255,.26);
+  --lav:#C4B2FF; --lav-soft:rgba(196,178,255,.14); --on-pastel:#18121F;
+  --mint:#9EE8C8; --mint-soft:rgba(158,232,200,.13);
+  --sky:#A6D2FF; --sky-soft:rgba(166,210,255,.13);
+  --peach:#FFC2A1; --peach-soft:rgba(255,194,161,.14);
+  --butter:#FFE39B; --butter-soft:rgba(255,227,155,.14);
+  --rose:#FFB1CB; --rose-soft:rgba(255,177,203,.14);
+  --stone:rgba(169,159,186,.14); --stone-ink:#C3BAD2;
+  --f-display:"Fraunces",Georgia,"Times New Roman",serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  --f-mono:"DM Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.4;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+img{max-width:100%}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding-top:env(safe-area-inset-top,0px);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:calc(170px + env(safe-area-inset-bottom,0px))}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--lav);outline-offset:2px}
+@keyframes think{0%,70%,100%{opacity:.3;transform:translateY(0)}35%{opacity:1;transform:translateY(-1px)}}
+
+/* Cabecera */
+.top{display:flex;align-items:center;gap:13px;padding-block:20px 8px}
+.psi{flex:none;width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-size:30px;line-height:1;color:var(--lav);
+  background:radial-gradient(circle at 50% 40%,rgba(196,178,255,.22),rgba(196,178,255,.04) 70%);border:1px solid rgba(196,178,255,.35);text-shadow:0 0 14px rgba(196,178,255,.6);box-shadow:0 0 22px -6px rgba(196,178,255,.45)}
+.brand{min-width:0}
+.brand h1{font-family:var(--f-display);font-weight:700;font-size:29px;line-height:1;margin:0;letter-spacing:-.2px}
+.brand h1 em{font-style:italic;font-weight:600;color:var(--lav);text-shadow:0 0 20px rgba(196,178,255,.35)}
+.brand p{margin:7px 0 0;font-size:12.5px;color:var(--muted);font-weight:500}
+.top .la{height:46px;width:auto;margin-left:auto;flex:none;display:block}
+
+/* Resumen */
+.sum{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(38,31,55,.95),rgba(22,18,33,.95));border:1px solid var(--line-strong);border-radius:24px;padding:20px 18px 16px;margin-block:12px 4px;display:grid;gap:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 22px 40px -26px rgba(0,0,0,.8)}
+.sum::before{content:"";position:absolute;right:-70px;top:-80px;width:240px;height:220px;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(196,178,255,.2),rgba(196,178,255,0)),radial-gradient(closest-side at 30% 70%,rgba(255,177,203,.12),rgba(255,177,203,0))}
+.sum > *{position:relative}
+.sum .big{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sum .big b{font-family:var(--f-display);font-weight:700;font-size:56px;line-height:.9;color:var(--lav);font-variant-numeric:tabular-nums;letter-spacing:-1px;text-shadow:0 0 26px rgba(196,178,255,.35)}
+.sum .big span{color:var(--muted);font-size:14.5px}
+.bar{height:12px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden;display:flex}
+.bar i{display:block;height:100%;border-right:2px solid #1E1829}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat{border-radius:16px;padding:9px 12px;min-width:0;border:1px solid transparent}
+.stat:nth-child(1){background:var(--lav-soft);border-color:rgba(196,178,255,.18)} .stat:nth-child(1) b{color:var(--lav)}
+.stat:nth-child(2){background:var(--mint-soft);border-color:rgba(158,232,200,.18)} .stat:nth-child(2) b{color:var(--mint)}
+.stat:nth-child(3){background:var(--peach-soft);border-color:rgba(255,194,161,.18)} .stat:nth-child(3) b{color:var(--peach)}
+.stat b{display:block;font-family:var(--f-display);font-weight:700;font-size:25px;line-height:1.15;font-variant-numeric:tabular-nums}
+.stat span{font-size:11.5px;color:var(--muted);line-height:1.25;display:block;font-weight:500}
+.sync{font-size:12px;color:var(--muted)}
+
+/* Pestañas */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:linear-gradient(var(--bg) 76%,rgba(16,13,24,0));padding-block:10px 14px}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);background:rgba(27,22,39,.95);border:1px solid var(--line);border-radius:99px;padding:4px;gap:2px}
+.seg button{border:0;background:transparent;border-radius:99px;padding:9px 4px;font-weight:600;font-size:14.5px;line-height:1.1;cursor:pointer;color:var(--muted);transition:background .2s,color .2s}
+.seg button[aria-selected="true"]{background:var(--lav);color:var(--on-pastel);box-shadow:0 0 18px -4px rgba(196,178,255,.6)}
+
+/* Semestres y filas */
+.sem{margin-block:20px}
+.semh{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.chip{flex:none;min-width:40px;height:28px;padding:0 9px;border-radius:99px;display:inline-grid;place-items:center;font-family:var(--f-display);font-style:italic;font-weight:700;font-size:15px;color:var(--on-pastel)}
+.semh h2{font-family:var(--f-display);font-size:21px;margin:0;font-weight:700;letter-spacing:-.2px}
+.semh .meta{font-family:var(--f-mono);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.semh .all,.ghost{margin-left:auto;border:1px solid var(--line-strong);background:var(--surface-2);color:var(--lav);border-radius:99px;padding:6px 12px;font-size:12.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden}
+.row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-top:1px solid var(--line);background:transparent;padding:11px 14px;cursor:pointer;min-height:58px;transition:background .2s}
+.row:first-child{border-top:0}
+.row:hover{background:rgba(196,178,255,.05)}
+/* Marca: círculo vacío = pendiente · círculo menta con visto = aprobada · nube de pensamiento con puntos = inscrita (cursando) */
+.ck{flex:none;width:28px;height:28px;display:grid;place-items:center}
+.ck svg{width:28px;height:28px;display:block}
+.dot .r{fill:rgba(255,255,255,.02);stroke:#5F5573;stroke-width:1.6}
+.dot .k{fill:none;stroke:var(--on-pastel);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;display:none}
+.ck .tb{display:none}
+.tb .c{fill:var(--butter);stroke:#E8C566;stroke-width:1.1}
+.tb .d{fill:var(--on-pastel);animation:think 1.6s ease-in-out infinite}
+.tb .d:nth-of-type(2){animation-delay:.2s} .tb .d:nth-of-type(3){animation-delay:.4s}
+.row[aria-pressed="true"] .dot .r{fill:var(--mint);stroke:var(--mint)}
+.row[aria-pressed="true"] .dot .k{display:block}
+.row.enr .dot{display:none}
+.row.enr .ck .tb{display:block}
+.row .tx{min-width:0;flex:1}
+.row .nm{font-weight:600;font-size:15px;line-height:1.3}
+/* Resaltador: al aprobarla, el nombre queda pintado como con un resaltador pastel, un color por semestre */
+.row .nm .hl{border-radius:.45em .2em .55em .25em;padding:.05em .3em;margin:0 -.3em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.row[aria-pressed="true"] .nm .hl{color:#17121F;background-repeat:no-repeat;background-size:100% 88%;background-position:0 75%;background-image:
+  linear-gradient(100deg,rgba(var(--hl),0) .6%,rgba(var(--hl),.96) 2.2%,rgba(var(--hl),.86) 7%,rgba(var(--hl),.84) 90%,rgba(var(--hl),.97) 96%,rgba(var(--hl),0) 99.4%),
+  linear-gradient(181deg,rgba(255,255,255,0) 0%,rgba(255,255,255,.22) 12%,rgba(255,255,255,0) 30%)}
+.row.hl-in .nm .hl{animation:hlSweep .55s cubic-bezier(.3,.7,.4,1) both}
+@keyframes hlSweep{from{background-size:0% 88%;color:var(--ink)}to{background-size:100% 88%;color:#17121F}}
+.row .sub{font-size:12.5px;color:var(--muted);margin-top:4px;display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center}
+.code{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
+.uc{flex:none;font-family:var(--f-mono);font-weight:500;font-size:12.5px;color:var(--lav);font-variant-numeric:tabular-nums}
+.st{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;letter-spacing:.1px}
+.st.ok{background:var(--mint-soft);color:var(--mint)}
+.st.av{background:var(--sky-soft);color:var(--sky)}
+.st.lk{background:var(--stone);color:var(--stone-ink);font-weight:600}
+.why .st.lk{border-radius:10px}
+.st.wn{background:var(--peach-soft);color:var(--peach)}
+.st.en{background:var(--butter-soft);color:var(--butter)}
+.note{font-size:12.5px;color:var(--muted);margin:8px 2px}
+.note b{color:var(--ink)}
+.elh{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:16px 2px 8px;font-size:16px;font-family:var(--f-display)}
+.elh span:last-child{font-family:var(--f-body);font-size:12.5px;color:var(--muted)}
+.opts div{margin-top:3px}
+.markbar{display:grid;gap:6px;margin:4px 2px}
+.markbar>span{font-size:12.5px;color:var(--muted)}
+.marks{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:rgba(27,22,39,.95);border:1px solid var(--line);padding:4px;border-radius:18px}
+.marks button{display:flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:14px;padding:9px 6px;font-weight:600;font-size:14px;background:transparent;color:var(--muted);cursor:pointer}
+.marks button[aria-pressed="true"]{background:var(--surface-2);color:var(--ink);box-shadow:inset 0 0 0 1px var(--line-strong),inset 0 -3px 0 var(--mint)}
+#mkE[aria-pressed="true"]{box-shadow:inset 0 0 0 1px var(--line-strong),inset 0 -3px 0 var(--butter)}
+.mk{flex:none;width:18px;height:18px}
+.mk.dot .r{fill:var(--mint);stroke:var(--mint)} .mk.dot .k{display:block}
+.mk.tb{display:block}
+.cursando{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--butter);font-weight:600}
+.cursando svg{width:20px;height:20px;display:block}
+.cursando .tb{display:block}
+.ps.cur{border-color:rgba(255,227,155,.4)}
+.ps.cur header{background:var(--butter-soft)}
+.opener{border:0;cursor:pointer;font:inherit;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.opener .car{transition:transform .2s;display:inline-block}
+.opener[aria-expanded="true"] .car{transform:rotate(180deg)}
+.opener:hover{box-shadow:inset 0 0 0 1px currentColor}
+.opens{margin-top:10px;padding:10px 12px;border-radius:14px;background:rgba(166,210,255,.06);border:1px dashed rgba(166,210,255,.3);font-size:13px}
+.opens p{margin:0 0 6px;color:var(--muted);font-size:11.5px;font-weight:600}
+.opens p+div,.opens ul+p{margin-top:10px}
+.opens ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.opens li{display:flex;gap:8px;align-items:flex-start}
+.opens li b{font-weight:600}
+.opens li em{display:block;font-style:normal;font-size:12px;color:var(--muted)}
+.later{display:grid;gap:5px;color:var(--ink);font-size:12.5px;line-height:1.5}
+
+/* Recomendación */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:15px 16px;margin-block:12px}
+.card h3{font-family:var(--f-display);font-size:21px;font-weight:700;margin:0 0 10px;letter-spacing:-.2px}
+.modes{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:var(--sunk);border:1px solid var(--line);padding:4px;border-radius:18px}
+.modes button{border:0;border-radius:14px;padding:9px;font-weight:600;font-size:14.5px;background:transparent;color:var(--muted);cursor:pointer}
+.modes button[aria-pressed="true"]{background:var(--lav);color:var(--on-pastel)}
+.limits{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.lim{background:var(--sunk);border:1px solid var(--line);border-radius:16px;padding:9px 11px}
+.lim label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px;font-weight:500}
+.step{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.step button{width:36px;height:36px;border-radius:50%;border:1px solid var(--line-strong);background:var(--surface-2);color:var(--lav);font-size:20px;font-weight:600;cursor:pointer;line-height:1}
+.step output{font-family:var(--f-display);font-size:28px;font-weight:700;color:var(--lav);font-variant-numeric:tabular-nums}
+.rec{display:grid;gap:8px;margin-top:4px}
+.ri{display:flex;gap:12px;align-items:flex-start;padding:11px 12px;border:1px solid var(--line);border-radius:16px;background:var(--sunk)}
+.ri .chip{height:26px;min-width:38px;font-size:14px}
+.ri .tx{flex:1;min-width:0}
+.why{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.opts{font-size:12.5px;color:var(--muted);margin-top:5px}
+.tot{display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;padding-top:10px;border-top:1px dashed var(--line-strong);font-weight:600}
+.tot b{font-family:var(--f-display);font-size:28px;font-weight:700;color:var(--lav)}
+.mini{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.mini:first-of-type{border-top:0}
+.mini .tx{flex:1;min-width:0;font-size:14px}
+.empty{color:var(--muted);font-size:14px;padding:6px 0}
+
+/* Plan */
+.plan{display:grid;gap:10px}
+.ps{border:1px solid var(--line);border-radius:20px;background:var(--surface);overflow:hidden}
+.ps header{display:flex;justify-content:space-between;align-items:baseline;padding:10px 14px;background:rgba(196,178,255,.08);border-bottom:1px solid var(--line)}
+.ps header b{font-family:var(--f-display);font-size:18px;font-weight:700}
+.ps header span{font-family:var(--f-mono);font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;margin-left:10px}
+.ps ul{list-style:none;margin:0;padding:6px 14px 10px}
+.ps li{display:flex;gap:8px;align-items:center;padding:4px 0;font-size:14px}
+.ps li i{flex:none;width:10px;height:10px;border-radius:50%}
+.ps li span{flex:1;min-width:0}
+.ps li em{font-style:normal;font-family:var(--f-mono);color:var(--lav);font-size:11.5px}
+.ps.fin{border-color:rgba(158,232,200,.4)}
+.ps.fin header{background:var(--mint-soft)}
+
+/* Herramientas */
+.tools{display:grid;gap:12px}
+.tools > h2{font-family:var(--f-display);font-size:21px;font-weight:700;margin:24px 2px 0}
+.tools .card{margin:0}
+.tools .card h3{font-size:17px}
+.tools p{margin:0 0 8px;font-size:13.5px;color:var(--muted)}
+.inrow{display:flex;gap:8px;flex-wrap:wrap}
+.inrow select,.inrow input{flex:1;min-width:0;font:inherit;font-size:15px;padding:10px 12px;border-radius:14px;border:1px solid var(--line-strong);background:var(--sunk);color:var(--ink)}
+.inrow input.mono{font-family:var(--f-mono);font-size:13px}
+.btn{border:0;background:var(--lav);color:var(--on-pastel);border-radius:99px;padding:10px 16px;font-weight:700;font-size:14.5px;cursor:pointer;white-space:nowrap}
+.btn.sec{background:var(--surface-2);color:var(--lav);box-shadow:inset 0 0 0 1px var(--line-strong)}
+.btn.danger{background:var(--rose-soft);color:var(--rose);box-shadow:inset 0 0 0 1px rgba(255,177,203,.35)}
+.codebox{font-family:var(--f-mono);font-size:13px;background:var(--lav-soft);border:1px dashed rgba(196,178,255,.4);color:var(--lav);border-radius:14px;padding:10px 12px;word-break:break-all;user-select:all}
+.msg{font-size:13px;margin-top:6px;min-height:1em}
+.msg.ok{color:var(--mint)} .msg.bad{color:var(--rose)}
+.foot{display:flex;align-items:center;justify-content:center;gap:14px;padding-block:26px 30px;color:var(--muted);font-size:12.5px;text-align:center;flex-wrap:wrap}
+.foot img{height:40px;width:auto;opacity:.9}
+.foot .credit{flex-basis:100%;margin:6px 0 0;padding-top:12px;border-top:1px dashed var(--line-strong);font-size:12px}
+.foot .credit b{color:var(--ink);font-weight:600}
+.acrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.acrow .sync{flex:1;min-width:160px}
+.acrow .btn{padding:8px 14px;font-size:13.5px}
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(5,4,9,.7);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet-in{position:relative;width:100%;max-width:440px;max-height:100%;overflow:auto;background:linear-gradient(180deg,#261F37,#1A1526);border:1px solid var(--line-strong);border-radius:26px;padding:22px 18px 20px;box-shadow:0 24px 60px -20px rgba(0,0,0,.8)}
+.sheet-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sheet-h h3{font-family:var(--f-display);font-size:24px;font-weight:700;margin:0}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:#fff;color:#1f1f1f;box-shadow:none;font-weight:600;font-size:15px;padding:12px}
+.or{display:flex;align-items:center;gap:10px;margin:14px 0;color:var(--muted);font-size:12px}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line-strong)}
+.fields{display:grid;gap:8px}
+.fields input{width:100%;font:inherit;font-size:16px;padding:11px 14px;border-radius:14px;border:1px solid var(--line-strong);background:var(--sunk);color:var(--ink)}
+.pw{position:relative}
+.pw input{padding-right:84px}
+.eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:5px;border:0;background:transparent;color:var(--lav);font-size:13px;font-weight:600;padding:8px;cursor:pointer}
+.eye[aria-pressed="false"] .slash{display:none}
+.link{border:0;background:none;color:var(--sky);font-size:13px;padding:10px 0 0;cursor:pointer;text-decoration:underline}
+
+/* Notas: calculadora de cuánto me falta (escala UNET 1–100 a 1–9) */
+.grows{display:grid;gap:8px;margin-top:12px}
+.gcount{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:12px;font-size:13.5px;color:var(--muted)}
+.gcn{display:flex;gap:6px}
+.gcn button{width:40px;height:38px;border-radius:12px;border:1px solid var(--line-strong);background:var(--surface-2);color:var(--ink);font-family:var(--f-display);font-size:18px;font-weight:700;cursor:pointer}
+.gcn button[aria-pressed="true"]{background:var(--lav);border-color:var(--lav);color:var(--on-pastel)}
+.grow{display:grid;grid-template-columns:minmax(0,1fr) 74px 70px 38px 30px;gap:6px;align-items:center}
+.grow input{width:100%;min-width:0;font:inherit;font-size:16px;padding:9px 8px;border-radius:12px;border:1px solid var(--line-strong);background:var(--sunk);color:var(--ink)}
+.grow .gl{font-size:14px}
+.gp{position:relative;display:block}
+.gp input{padding-right:20px}
+.gp span{position:absolute;right:8px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px;pointer-events:none}
+.gn{text-align:center;font-family:var(--f-mono)}
+.gc{font-family:var(--f-mono);font-size:13px;color:var(--lav);text-align:center}
+.gx{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:18px;line-height:1;cursor:pointer}
+.gsum{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.goals{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.goals button{display:grid;place-items:center;border:1px solid var(--line-strong);background:var(--surface-2);color:var(--ink);border-radius:14px;padding:8px 0;font-family:var(--f-display);font-size:24px;font-weight:700;cursor:pointer;line-height:1.1}
+.goals button small{font-family:var(--f-body);font-size:10.5px;font-weight:600;color:var(--muted)}
+.goals button[aria-pressed="true"]{background:var(--lav);border-color:var(--lav);color:var(--on-pastel)}
+.goals button[aria-pressed="true"] small{color:var(--on-pastel)}
+.gacc{display:flex;align-items:baseline;gap:8px;color:var(--muted);font-size:13px}
+.gacc strong{font-family:var(--f-display);font-size:34px;font-weight:700;color:var(--ink)}
+.gbar{position:relative;height:12px;border-radius:99px;background:rgba(255,255,255,.06);margin:10px 0 14px}
+.gbar i{position:absolute;inset:0 auto 0 0;background:var(--lav);border-radius:99px}
+.gbar b{position:absolute;top:-5px;bottom:-5px;width:3px;border-radius:2px;background:var(--peach);transform:translateX(-1.5px)}
+.gbar b.mx{background:var(--sky);width:2px}
+.gbig{position:relative;overflow:hidden;border-radius:18px;padding:16px 14px 14px;background:var(--sky-soft);border:1px solid rgba(166,210,255,.3);display:grid;gap:2px;text-align:center}
+.gbig span{font-size:12.5px;color:var(--muted);font-weight:600}
+.gbig strong{font-family:var(--f-display);font-size:48px;font-weight:700;line-height:1.05;color:var(--sky)}
+.gbig strong small{font-size:18px;color:var(--muted)}
+.gbig em{font-style:normal;font-size:13px;color:var(--ink)}
+.gbig.ok{background:var(--mint-soft);border-color:rgba(158,232,200,.35)} .gbig.ok strong{color:var(--mint)}
+.gbig.bad{background:var(--rose-soft);border-color:rgba(255,177,203,.35)} .gbig.bad strong{color:var(--rose)}
+.gtable{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:12px}
+.gtable div{display:grid;place-items:center;border:1px solid var(--line);border-radius:12px;padding:6px 0;background:var(--sunk)}
+.gtable div.on{border-color:var(--lav);background:var(--lav-soft)}
+.gtable span{font-size:11px;color:var(--muted);font-family:var(--f-mono)}
+.gtable b{font-family:var(--f-display);font-size:21px;font-weight:700}
+.gmsg.wn{color:var(--peach);font-size:14px;margin:4px 0 0}
+.conv{align-items:center}
+.conv input{max-width:150px;font-size:16px}
+.cvarrow{color:var(--muted);font-size:18px}
+.conv output{font-family:var(--f-display);font-size:30px;font-weight:700;color:var(--lav);min-width:44px;text-align:center}
+@media (max-width:380px){.grow{grid-template-columns:minmax(0,1fr) 64px 60px 34px 28px}.seg button{font-size:13px}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}.brand h1{font-size:25px}.psi{width:44px;height:44px;font-size:26px}.top .la{height:40px}}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header class="top">
+    <span class="psi" aria-hidden="true">Ψ</span>
+    <div class="brand"><h1>Pensum <em>Psicología</em></h1><p>Estudiantes de Psicología · UNET</p></div>
+    <img class="la" src="icons/logo-alpha.png" alt="Movimiento Estudiantil Alpha">
+  </header>
+
+  <section class="sum" aria-label="Resumen">
+    <div class="big"><b id="sUC">0</b><span>de 139 U.C. aprobadas</span></div>
+    <div class="bar" id="sBar" aria-hidden="true"></div>
+    <div class="cursando" id="sCur" hidden></div>
+    <div class="stats">
+      <div class="stat"><b id="sMat">0/47</b><span>materias</span></div>
+      <div class="stat"><b id="sEl">0/3</b><span>electivas</span></div>
+      <div class="stat"><b id="sSem">–</b><span>semestres para terminar</span></div>
+    </div>
+    <div class="acrow"><div class="sync" id="sync">Tu progreso se guarda en este dispositivo.</div>
+      <span id="acct" hidden><button class="btn sec" id="acBtn">Guardar en la nube</button></span></div>
+  </section>
+
+  <nav class="tabs" aria-label="Secciones">
+    <div class="seg" role="tablist">
+      <button role="tab" id="t-materias" aria-selected="true">Materias</button>
+      <button role="tab" id="t-inscribir" aria-selected="false">Inscribir</button>
+      <button role="tab" id="t-plan" aria-selected="false">Mi plan</button>
+      <button role="tab" id="t-notas" aria-selected="false">Notas</button>
+    </div>
+  </nav>
+
+  <main>
+    <section id="v-materias">
+      <div class="markbar">
+        <span>Al tocar una materia, marcarla como:</span>
+        <div class="marks" role="group" aria-label="Tipo de marca">
+          <button id="mkA" aria-pressed="true"><svg class="mk dot" viewBox="0 0 28 28" aria-hidden="true"><circle class="r" cx="14" cy="14" r="11.5"/><path class="k" d="M8.8 14.4l3.5 3.5 7-7.6"/></svg>Aprobada</button>
+          <button id="mkE" aria-pressed="false"><span id="mkEIcon"></span>Inscrita este semestre</button>
+        </div>
+      </div>
+      <div id="semList"></div>
+    </section>
+    <section id="v-inscribir" hidden>
+      <div class="card">
+        <h3>¿Qué vas a inscribir?</h3>
+        <div class="modes">
+          <button id="mSem" aria-pressed="true">Semestre regular</button>
+          <button id="mInt" aria-pressed="false">Intensivo</button>
+        </div>
+        <div class="limits">
+          <div class="lim"><label for="oUC">Máximo de U.C.</label>
+            <div class="step"><button id="ucMinus" aria-label="Menos U.C.">−</button><output id="oUC">20</output><button id="ucPlus" aria-label="Más U.C.">+</button></div></div>
+          <div class="lim"><label for="oN">Máximo de materias</label>
+            <div class="step"><button id="nMinus" aria-label="Menos materias">−</button><output id="oN">10</output><button id="nPlus" aria-label="Más materias">+</button></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Te recomendamos</h3>
+        <p class="note" id="recNote" style="margin-top:-4px" hidden></p>
+        <div class="rec" id="recList"></div>
+        <div class="tot" id="recTot"></div>
+      </div>
+      <div class="card">
+        <h3>Otras materias disponibles</h3>
+        <p class="note" style="margin-top:0"><b>Ruta crítica</b> son las materias que, si las dejas, retrasan tu grado. Las de semestres muy adelantados no entran en la recomendación, aunque puedes inscribirlas. Si alguna no salió en la oferta, márcala y la recomendación se ajusta.</p>
+        <div id="otherList"></div>
+      </div>
+      <p class="note">Las prelaciones salen del pensum oficial. La oferta, los cupos, el máximo de U.C. y los permisos especiales los confirmas en Control de Estudios.</p>
+    </section>
+    <section id="v-notas" hidden>
+      <div class="card">
+        <h3>¿Cuánto me falta?</h3>
+        <p class="note" style="margin-top:-4px">Pon el porcentaje y la nota (1 a 100) de cada parcial. Deja en blanco la nota de los parciales que todavía no presentas.</p>
+        <div class="gcount"><span>¿Cuántos parciales tiene?</span><div class="gcn" id="gCount" role="group" aria-label="Cantidad de evaluaciones"></div></div>
+        <div id="gRows" class="grows"></div>
+        <div class="inrow" style="margin-top:10px"><button class="btn sec" id="gAdd">+ Agregar parcial</button><button class="ghost" id="gReset" style="margin-left:auto">Reiniciar</button></div>
+        <div class="gsum" id="gSum"></div>
+      </div>
+      <div class="card">
+        <h3 style="font-size:17px">Meta de nota definitiva</h3>
+        <div class="goals" id="gGoals" role="group" aria-label="Meta"></div>
+      </div>
+      <div class="card gres" id="gRes"></div>
+      <div class="card">
+        <h3 style="font-size:17px">Convertir una nota</h3>
+        <div class="inrow conv"><input id="cvIn" type="number" inputmode="numeric" min="1" max="100" placeholder="Nota de 1 a 100" aria-label="Nota de 1 a 100"><span class="cvarrow">→</span><output id="cvOut">–</output><span class="note" style="margin:0">de 9</span></div>
+      </div>
+    </section>
+    <section id="v-plan" hidden>
+      <div class="card"><h3 id="planTitle">Tu ruta hasta el grado</h3>
+        <p class="note" style="margin:0">Calculado con los límites de semestre regular de “Inscribir”, suponiendo que apruebas todo y que te ofertan todas las materias.</p></div>
+      <div class="plan" id="planList"></div>
+    </section>
+
+    <section class="tools" id="tools" aria-label="Herramientas">
+      <h2>Herramientas</h2>
+      <div class="card">
+        <h3>Marcar rápido</h3>
+        <p>Marca como aprobadas todas las materias hasta un semestre y luego desmarca las que te falten.</p>
+        <div class="inrow">
+          <select id="qSem" aria-label="Semestre"></select>
+          <button class="btn sec" id="qGo">Marcar</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Terminé el semestre</h3>
+        <p>Pasa todas las materias inscritas (nube amarilla) a aprobadas de una vez. Si reprobaste alguna, la desmarcas después.</p>
+        <div class="inrow"><button class="btn sec" id="finSem">Marcar inscritas como aprobadas</button></div>
+        <div class="msg" id="finMsg" role="status"></div>
+      </div>
+      <div class="card">
+        <h3>Código de respaldo</h3>
+        <p>Guarda este código para pasar tu progreso a otro teléfono o recuperarlo si se borra.</p>
+        <div class="codebox" id="bkCode"></div>
+        <div class="inrow" style="margin-top:8px"><button class="btn sec" id="bkCopy">Copiar código</button></div>
+        <div class="inrow" style="margin-top:12px">
+          <input class="mono" id="bkIn" placeholder="Pega aquí un código PS1-…" autocomplete="off" spellcheck="false">
+          <button class="btn" id="bkLoad">Cargar</button>
+        </div>
+        <div class="msg" id="bkMsg" role="status"></div>
+      </div>
+      <div class="card">
+        <h3>Empezar de cero</h3>
+        <p>Desmarca todas las materias de este dispositivo.</p>
+        <div class="inrow"><button class="btn danger" id="rst">Borrar mi progreso</button>
+          <button class="btn danger" id="rstYes" hidden>Sí, borrar todo</button><button class="btn sec" id="rstNo" hidden>Cancelar</button></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="sheet" id="acSheet" hidden>
+    <div class="sheet-in" role="dialog" aria-modal="true" aria-labelledby="acTitle">
+      <div class="sheet-h"><h3 id="acTitle">Tu cuenta</h3><button class="ghost" id="acClose">Cerrar</button></div>
+      <div id="acOut">
+        <p class="note" style="margin:0 0 12px">Inicia sesión y tus materias se guardan en la nube. Aparecen en cualquier teléfono donde entres con la misma cuenta.</p>
+        <button class="btn gbtn" id="acGoogle"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#EA4335" d="M12 10.2v3.9h5.4c-.2 1.3-1.6 3.8-5.4 3.8-3.2 0-5.9-2.7-5.9-6s2.7-6 5.9-6c1.9 0 3.1.8 3.8 1.5l2.6-2.5C16.8 3.3 14.6 2.3 12 2.3 6.7 2.3 2.4 6.6 2.4 12s4.3 9.7 9.6 9.7c5.5 0 9.2-3.9 9.2-9.4 0-.6-.1-1.1-.2-1.6H12z"/></svg>Continuar con Google</button>
+        <div class="or"><span>o con tu correo</span></div>
+        <div class="fields">
+          <input id="acEmail" type="email" inputmode="email" autocomplete="email" placeholder="correo@ejemplo.com" aria-label="Correo">
+          <div class="pw"><input id="acPass" type="password" autocomplete="current-password" placeholder="Contraseña (mínimo 6 caracteres)" aria-label="Contraseña">
+            <button type="button" class="eye" id="acEye" aria-label="Mostrar contraseña" aria-pressed="false"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="slash" d="M4 4l16 16"/></svg><span id="acEyeT">Ver</span></button></div>
+        </div>
+        <div class="inrow" style="margin-top:10px"><button class="btn" id="acLogin">Entrar</button><button class="btn sec" id="acSignup">Crear cuenta</button></div>
+        <button class="link" id="acReset">¿Olvidaste tu contraseña?</button>
+        <p class="note" style="margin-top:12px">En iPhone, si el botón de Google no funciona dentro de la app instalada, usa correo y contraseña.</p>
+      </div>
+      <div id="acIn" hidden>
+        <p style="margin:0 0 4px">Sesión iniciada como</p>
+        <p class="code" id="acWho" style="font-size:14px;color:var(--lav-ink);margin:0 0 12px"></p>
+        <p class="note" style="margin:0 0 12px">Tus materias se guardan solas en la nube cada vez que marcas una.</p>
+        <button class="btn danger" id="acLogout">Cerrar sesión</button>
+      </div>
+      <div class="msg" id="acMsg" role="status"></div>
+      <p class="note" style="margin-top:14px;font-size:11.5px">Solo guardamos tu correo y las materias que marcas. Nadie más puede verlas. La app la administran los Estudiantes de Psicología de la UNET.</p>
+    </div>
+  </div>
+
+  <footer class="foot">
+    <img src="icons/logo-alpha.png" alt=""><span>Estudiantes de Psicología UNET<br>Movimiento Estudiantil Alpha</span>
+    <p class="credit">Agradecimiento especial al <b>Centro de Estudiantes de Ingeniería Electrónica</b>, creadores de esta app web.</p>
+  </footer>
+</div>
+
+<script>
+// Pensum de Licenciatura en Psicología UNET. "id" es la clave interna; "code" solo donde el pensum trae código oficial.
+const DATA = {"total_uc":139,"semesters":[
+{"n":1,"courses":[
+ {"id":"COMP","name":"Computación Aplicada a la Psicología","t":1,"p":2,"uc":2},
+ {"id":"INTRO","name":"Introducción a la Psicología","t":3,"p":0,"uc":2},
+ {"id":"LEN","code":"1033101","name":"Lenguaje y Comunicación","t":2,"p":1,"uc":2},
+ {"id":"ING1","code":"1023202T","name":"Inglés I","t":2,"p":1,"uc":2},
+ {"id":"PG1","name":"Psicología General I","t":4,"p":0,"uc":3},
+ {"id":"EST1","name":"Estadística Aplicada a la Psicología I","t":2,"p":2,"uc":3}]},
+{"n":2,"courses":[
+ {"id":"ECO","code":"1013401T","name":"Economía","t":2,"p":1,"uc":2},
+ {"id":"ING2","code":"1023302T","name":"Inglés II","pre":["ING1"],"t":2,"p":1,"uc":2},
+ {"id":"PG2","name":"Psicología General II","pre":["PG1"],"t":4,"p":0,"uc":3},
+ {"id":"BBC1","name":"Bases Biológicas de la Conducta I","t":4,"p":0,"uc":3},
+ {"id":"EST2","name":"Estadística Aplicada a la Psicología II","pre":["EST1"],"t":2,"p":2,"uc":3}]},
+{"n":3,"courses":[
+ {"id":"PYC1","name":"Psicología y Cultura I","t":3,"p":0,"uc":2},
+ {"id":"PG3","name":"Psicología General III","pre":["PG2"],"t":4,"p":0,"uc":3},
+ {"id":"BBC2","name":"Bases Biológicas de la Conducta II","pre":["BBC1"],"t":3,"p":2,"uc":3},
+ {"id":"PS1","name":"Psicología Social I","t":4,"p":0,"uc":3},
+ {"id":"PSM","name":"Psicometría","pre":["EST2"],"t":2,"p":2,"uc":3}]},
+{"n":4,"courses":[
+ {"id":"PYC2","name":"Psicología y Cultura II","pre":["PYC1"],"t":3,"p":0,"uc":2},
+ {"id":"PE1","name":"Psicología Evolutiva I","pre":["PG3"],"t":2,"p":2,"uc":3},
+ {"id":"PS2","name":"Psicología Social II","pre":["PS1"],"t":4,"p":0,"uc":3},
+ {"id":"MET","name":"Metodología de la Investigación","pre":["PSM"],"t":1,"p":2,"uc":2},
+ {"id":"PEDU","name":"Psicología Educativa","co":["PE1"],"t":2,"p":2,"uc":3}]},
+{"n":5,"courses":[
+ {"id":"PE2","name":"Psicología Evolutiva II","pre":["PE1"],"t":2,"p":2,"uc":3},
+ {"id":"PS3","name":"Psicología Social III","pre":["PS2"],"t":4,"p":0,"uc":3},
+ {"id":"MCI","name":"Métodos Cualitativos de Investigación","pre":["MET"],"t":2,"p":2,"uc":3},
+ {"id":"IEP1","name":"Instrumentos de Exploración Psicológica I","pre":["PSM"],"co":["TPER"],"t":3,"p":3,"uc":4},
+ {"id":"TPER","name":"Teorías de la Personalidad","t":2,"p":0,"uc":1},
+ {"id":"ENT","name":"Entrevista Psicológica","co":["IEP1"],"t":3,"p":0,"uc":2}]},
+{"n":6,"courses":[
+ {"id":"PYC3","name":"Psicología y Cultura III","pre":["PYC2"],"t":3,"p":0,"uc":2},
+ {"id":"PSC","name":"Problemas Sociales Contemporáneos","pre":["PS3","MCI"],"t":2,"p":2,"uc":3},
+ {"id":"PDF","name":"Psicología de la Diversidad Funcional","pre":["PEDU"],"t":2,"p":2,"uc":3},
+ {"id":"IEP2","name":"Instrumentos de Exploración Psicológica II","pre":["IEP1"],"t":3,"p":3,"uc":4},
+ {"id":"PORG","name":"Psicología de las Organizaciones","co":["IEP2"],"t":3,"p":0,"uc":2},
+ {"id":"PPAT","name":"Psicopatología","pre":["ENT"],"t":2,"p":2,"uc":3}]},
+{"n":7,"courses":[
+ {"id":"PYC4","name":"Psicología y Cultura IV","pre":["PYC3"],"t":3,"p":0,"uc":2},
+ {"id":"PAMB","name":"Psicología Ambiental","t":2,"p":1,"uc":2},
+ {"id":"PYE","name":"Psicología y Educación","pre":["PDF"],"t":2,"p":2,"uc":3},
+ {"id":"DG1","name":"Dinámica de Grupo I","t":2,"p":0,"uc":1},
+ {"id":"PC1","name":"Psicología Clínica I","pre":["PPAT"],"t":5,"p":0,"uc":3},
+ {"id":"ELEC1","name":"Electiva I","elective":true,"t":2,"p":1,"uc":2}]},
+{"n":8,"courses":[
+ {"id":"GPF","name":"Grandes Preguntas de la Filosofía","t":2,"p":0,"uc":1},
+ {"id":"DG2","name":"Dinámica de Grupo II","pre":["DG1"],"t":1,"p":2,"uc":2},
+ {"id":"PT1","name":"Psicoterapia I","pre":["TPER"],"t":3,"p":0,"uc":2},
+ {"id":"PC2","name":"Psicología Clínica II","pre":["PC1"],"t":5,"p":0,"uc":3},
+ {"id":"PP1","name":"Prácticas Profesionales I","pre":["PSC","PC1"],"co":["PC2"],"t":0,"p":6,"uc":4},
+ {"id":"ELEC2","name":"Electiva II","elective":true,"t":2,"p":1,"uc":2}]},
+{"n":9,"courses":[
+ {"id":"PARTE","name":"Psicología y Arte","t":2,"p":0,"uc":1},
+ {"id":"PT2","name":"Psicoterapia II","pre":["PT1"],"co":["PC3"],"t":2,"p":2,"uc":3},
+ {"id":"PC3","name":"Psicología Clínica III","pre":["PC2"],"t":5,"p":0,"uc":3},
+ {"id":"PP2","name":"Prácticas Profesionales II","pre":["PP1"],"co":["PC3"],"t":0,"p":6,"uc":4},
+ {"id":"ELEC3","name":"Electiva III","elective":true,"t":2,"p":1,"uc":2}]},
+{"n":10,"courses":[
+ {"id":"TAP","name":"Trabajo de Aplicación Profesional (T.A.P.)","tap":true,"t":0,"p":0,"uc":12}]}],
+"electives":[
+ {"id":"E-FOR","name":"Psicología Forense"},
+ {"id":"E-ADI","name":"Adicciones"},
+ {"id":"E-DEP","name":"Psicología del Deporte"},
+ {"id":"E-CSO","name":"Comportamiento Social de las Organizaciones"},
+ {"id":"E-HME","name":"Historia de las Mentalidades"},
+ {"id":"E-OFA","name":"Orientación Familiar"},
+ {"id":"E-PSA","name":"Psicometría Aplicada"}]};
+const TOTAL_UC = 139, COURSE_UC = 127, ELECT_NEEDED = 3, ELECT_UC = 2;
+const EL_NAME = ["Electiva I","Electiva II","Electiva III"], EL_SEM = [7,8,9];   // en cadena: II requiere la I y III requiere la II
+const AHEAD = 2;   // la recomendación no sugiere materias más de 2 semestres por encima de tu nivel
+const ROMAN = ["","I","II","III","IV","V","VI","VII","VIII","IX","X"];
+const SEMC = {1:"#F7B7A3",2:"#F6D186",3:"#C9E4A7",4:"#9FD8C3",5:"#9CCBEA",6:"#B3B6EE",7:"#D6B3E8",8:"#F0B0CB",9:"#E7C3A0",10:"#BFD3D9",0:"#A8DEDE"};
+const chipStyle = s => `background:${SEMC[s]}`;
+
+// ---------- datos ----------
+const CORE = [], BY = {};
+let TAP = null;
+DATA.semesters.forEach(s => s.courses.forEach(c => {
+  if (c.elective) return;
+  const o = {...c, sem:s.n, key:c.id, code:c.code||"", pre:c.pre||[], co:c.co||[]};
+  if (c.tap) { TAP = o; return; }
+  CORE.push(o); BY[o.key] = o;
+}));
+const ELECT = DATA.electives.map(e => ({...e, key:e.id, code:e.code||"", pre:[], co:[], uc:ELECT_UC, elective:true}));
+ELECT.forEach(e => BY[e.key] = e);
+const ORDER = [...CORE.map(c=>c.key), ...ELECT.map(e=>e.key)];   // orden fijo para el código de respaldo
+const nm = k => BY[k] ? BY[k].name : k;
+// U.C. acumuladas al terminar cada semestre (para saber en qué nivel va el estudiante)
+const CUM = []; { let t = 0; DATA.semesters.forEach(s => { if (s.n > 9) return; s.courses.forEach(c => t += c.uc); CUM[s.n] = t; }); }
+const levelOf = uc => { let l = 1; for (let s=1;s<=9;s++) if (CUM[s] <= uc) l = s+1; return Math.min(9, l); };
+
+// dependientes y ruta crítica (solo materias del pensum)
+const DEPS = {}; CORE.forEach(c => DEPS[c.key] = []);
+CORE.forEach(c => [...c.pre, ...c.co].forEach(p => DEPS[p] && DEPS[p].push(c.key)));
+const CHAIN = {};
+function chain(k){ if (CHAIN[k]) return CHAIN[k];
+  const d = CORE.filter(c => c.pre.includes(k)).map(c => chain(c.key));
+  return CHAIN[k] = 1 + (d.length ? Math.max(...d) : 0); }
+CORE.forEach(c => chain(c.key));
+function unlockSet(k){ const seen = new Set(), st=[k];
+  while(st.length){ const x=st.pop(); (DEPS[x]||[]).forEach(d=>{ if(!seen.has(d)){seen.add(d); st.push(d);} }); }
+  return seen; }
+const UNLOCK = {}; CORE.forEach(c => UNLOCK[c.key] = unlockSet(c.key).size);
+const OPEN = new Set();
+
+// ---------- estado ----------
+const LS = "pensumPsicologiaUNET.v1";
+let MARK = "a";   // qué marca un toque: "a" aprobada, "e" inscrita
+const plusE = () => new Set([...S.a, ...S.e]);
+const DEF_LIM = {sem:{uc:20,n:10}, int:{uc:8,n:2}};
+let S = {a:new Set(), e:new Set(), x:new Set(), g:{}, gk:"libre", mode:"sem", lim:JSON.parse(JSON.stringify(DEF_LIM)), t:0};
+function loadLocal(){ try{ const r = JSON.parse(localStorage.getItem(LS)||"null"); if(r) applyRaw(r); }catch(e){} }
+function applyRaw(r){
+  S.a = new Set((r.a||[]).filter(k=>BY[k])); S.x = new Set((r.x||[]).filter(k=>BY[k]));
+  S.e = new Set((r.e||[]).filter(k=>BY[k] && !S.a.has(k)));
+  S.g = (r.g && typeof r.g === "object") ? r.g : {}; S.gk = typeof r.gk === "string" ? r.gk : "libre";
+  S.mode = r.mode==="int"?"int":"sem";
+  if (r.lim && r.lim.sem && r.lim.int) S.lim = {sem:{uc:+r.lim.sem.uc||20,n:+r.lim.sem.n||10}, int:{uc:+r.lim.int.uc||8,n:+r.lim.int.n||2}};
+  S.t = r.t||0;
+}
+const raw = () => ({a:[...S.a], e:[...S.e], x:[...S.x], g:S.g, gk:S.gk, mode:S.mode, lim:S.lim, t:S.t});
+let dbRef = null, dbBusy = Promise.resolve(), dbTimer = null;
+function save(){
+  S.t = Date.now();
+  try{ localStorage.setItem(LS, JSON.stringify(raw())); }catch(e){}
+  if (dbRef){ clearTimeout(dbTimer); dbTimer = setTimeout(()=>{ const body = raw();
+    dbBusy = dbBusy.then(()=>dbRef.set(body)).then(()=>setSync(true)).catch(()=>{}); }, 900); }
+}
+function setSync(t){ document.getElementById("sync").textContent = t === true ? "Tu progreso se sincroniza con tu cuenta y se guarda en este dispositivo." : (t || "Tu progreso se guarda en este dispositivo."); }
+
+// ---------- lógica ----------
+const electCount = (A, extra=0) => Math.min(ELECT_NEEDED, ELECT.filter(e=>A.has(e.key)).length + extra);
+const ucOf = (A, extra=0) => CORE.reduce((s,c)=>s+(A.has(c.key)?c.uc:0),0) + ELECT_UC*electCount(A,extra);
+function missing(c, A){
+  const m = [];
+  c.pre.forEach(p => { if(!A.has(p)) m.push(nm(p)); });
+  return m;
+}
+function recommend(A, lim, excl, extraE=0, near=true){
+  const uc = ucOf(A, extraE), lvl = levelOf(uc), top = near ? lvl + AHEAD : 99;
+  const avail = CORE.filter(c => !A.has(c.key) && !excl.has(c.key) && missing(c,A).length===0);
+  const cand = avail.filter(c => c.sem <= top); const candSet = new Set(cand.map(c=>c.key));
+  const eA = electCount(A, extraE);
+  const eligE = ELECT.filter(e => !A.has(e.key) && !excl.has(e.key));
+  const slots = [];   // las electivas van en cadena: una por semestre
+  if (eA < ELECT_NEEDED && eligE.length && EL_SEM[eA] <= top)
+    slots.push({key:"SLOT", name:EL_NAME[eA], uc:ELECT_UC, sem:EL_SEM[eA], slot:true, prio:ELECT_NEEDED-eA, pre:[], co:[], options:eligE});
+  const pr = c => c.slot ? c.prio : CHAIN[c.key];
+  const pool = [...cand, ...slots].sort((p,q) => pr(q) - pr(p) || p.sem - q.sem || (q.slot?0:UNLOCK[q.key]) - (p.slot?0:UNLOCK[p.key]));
+  const picked = [], pk = new Set(); let pu = 0, pn = 0;
+  for (const c of pool){
+    if (pk.has(c.key)) continue;
+    const g = []; let bad = false; const st = [...c.co], seen = new Set([c.key]);
+    while (st.length){ const co = st.pop(); if (seen.has(co)) continue; seen.add(co);
+      if (A.has(co) || pk.has(co)) continue; if (candSet.has(co)){ g.push(BY[co]); st.push(...BY[co].co); } else bad = true; }
+    if (bad) continue; g.push(c);
+    const gk = new Set(g.map(x=>x.key));
+    const mates = cand.filter(x => !pk.has(x.key) && !gk.has(x.key) && x.co.some(k=>gk.has(k)) && x.co.every(k=>A.has(k)||pk.has(k)||gk.has(k)));
+    const fits = arr => { const u = arr.reduce((s,x)=>s+x.uc,0), n = arr.filter(x=>x.uc>0).length; return (pu+u <= lim.uc && pn+n <= lim.n) ? [u,n] : null; };
+    const use = fits([...g, ...mates]) ? [...g, ...mates] : g, un = fits(use);
+    if (!un) continue;
+    use.forEach(x=>{ picked.push(x); pk.add(x.key); }); pu += un[0]; pn += un[1];
+  }
+  if (!picked.length && near) { const r = recommend(A, lim, excl, extraE, false); r.cand = avail; return r; }
+  return {picked, uc:pu, n:pn, cand:avail, eligE, pk};
+}
+function projection(){
+  const A = new Set(S.a); let extra = 0; const out = [];
+  if (S.e.size){ const cur = [...S.e].map(k=>BY[k]);
+    out.push({current:true, picked:cur, uc:cur.reduce((t,c)=>t+c.uc,0), n:cur.filter(c=>c.uc>0).length});
+    S.e.forEach(k => A.add(k)); }
+  for (let i=0;i<16;i++){
+    const r = recommend(A, S.lim.sem, new Set(), extra);
+    if (!r.picked.length) break;
+    r.picked.forEach(x => { if (x.slot) extra++; else A.add(x.key); });
+    out.push(r);
+  }
+  const doneCore = CORE.every(c => A.has(c.key)), doneE = electCount(A,extra) >= ELECT_NEEDED;
+  return {sems:out, complete: doneCore && doneE, A, extra};
+}
+
+// ---------- Calculadora de notas ----------
+const CONV = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0, 2.0, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3.0, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4.0, 4.0, 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.8, 4.9, 5.0, 5.1, 5.2, 5.3, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 6.0, 6.0, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 6.9, 7.0, 7.0, 7.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7, 7.8, 7.9, 8.0, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.0, 9.0, 9.0, 9.0, 9.0];   // nota 1–100 → escala UNET 1–9
+const conv = n => { n = Math.round(+n); return n < 1 ? 1 : n > 100 ? 9 : CONV[n-1]; };
+const EPS = 1e-9;
+const num = v => v === "" || v === null || v === undefined || isNaN(+v) ? null : +v;
+const defEvals = () => [1,2,3,4].map(i => ({l:"Parcial " + i, p:25, n:""}));
+function evalsOf(k){ if (!S.g[k]) S.g[k] = {ev:defEvals(), goal:5}; return S.g[k]; }
+function gradeCalc(ev, goal){
+  const valid = ev.filter(e => num(e.p) > 0);
+  const sumP = valid.reduce((t,e) => t + num(e.p), 0);
+  const done = valid.filter(e => num(e.n) !== null), pend = valid.filter(e => num(e.n) === null);
+  const doneP = done.reduce((t,e) => t + num(e.p), 0), pendP = pend.reduce((t,e) => t + num(e.p), 0);
+  const acc = done.reduce((t,e) => t + num(e.p)/100 * conv(e.n), 0);
+  const need = g => { if (acc >= g - 0.5 - EPS) return 0;
+    if (pendP <= 0) return null;
+    for (let x = 1; x <= 100; x++) if (acc + conv(x) * pendP/100 >= g - 0.5 - EPS) return x;
+    return null; };
+  const maxFinal = Math.min(9, Math.max(1, Math.floor(acc + 9*pendP/100 + 0.5 + EPS)));
+  const finalNow = Math.min(9, Math.max(1, Math.floor(acc + 0.5 + EPS)));
+  return {sumP, doneP, pendP, acc, need, maxFinal, finalNow, nPend:pend.length, nDone:done.length};
+}
+function renderNotas(){
+  S.gk = "libre";
+  const G = evalsOf(S.gk);
+  $("gRows").innerHTML = G.ev.map((e,i) => `<div class="grow" data-i="${i}">
+      <input class="gl" data-f="l" value="${String(e.l).replace(/"/g,"&quot;")}" aria-label="Nombre de la evaluación" placeholder="Parcial ${i+1}">
+      <label class="gp"><input data-f="p" type="number" inputmode="decimal" min="0" max="100" value="${e.p}" aria-label="Porcentaje"><span>%</span></label>
+      <input class="gn" data-f="n" type="number" inputmode="numeric" min="1" max="100" value="${e.n}" placeholder="Nota" aria-label="Nota de 1 a 100">
+      <output class="gc">${num(e.n)!==null ? conv(e.n).toFixed(1) : "–"}</output>
+      <button class="gx" data-del="${i}" aria-label="Quitar evaluación">×</button></div>`).join("");
+  $("gCount").innerHTML = [2,3,4,5,6].map(n => `<button data-count="${n}" aria-pressed="${G.ev.length===n}">${n}</button>`).join("");
+  $("gGoals").innerHTML = [5,6,7,8,9].map(g => `<button data-goal="${g}" aria-pressed="${G.goal===g}">${g}${g===5?"<small>Aprobar</small>":""}</button>`).join("");
+  renderGradeResult();
+}
+function renderGradeResult(){
+  const G = evalsOf(S.gk), r = gradeCalc(G.ev, G.goal);
+  const okSum = Math.abs(r.sumP - 100) < 0.01;
+  $("gSum").innerHTML = `<span class="${okSum?"st ok":"st wn"}">Porcentajes: ${+r.sumP.toFixed(2)}%${okSum?"":" · deben sumar 100%"}</span>
+    <span class="st lk">Evaluado: ${+r.doneP.toFixed(2)}%</span><span class="st lk">Falta: ${+r.pendP.toFixed(2)}%</span>`;
+  const accTxt = r.acc.toFixed(2).replace(".", ",");
+  const bar = `<div class="gbar" aria-hidden="true"><i style="width:${Math.min(100, r.acc/9*100)}%"></i><b style="left:${4.5/9*100}%"></b><b class="mx" style="left:${Math.min(100,(r.acc+9*r.pendP/100)/9*100)}%"></b></div>`;
+  let h = `<div class="gacc"><span>Llevas acumulado</span><strong>${accTxt}</strong><span>de 9</span></div>${bar}`;
+  if (!okSum){
+    h += `<p class="gmsg wn">Revisa los porcentajes: suman ${+r.sumP.toFixed(2)}% y deben sumar 100%.</p>`;
+  } else if (r.pendP <= 0){
+    const ap = r.finalNow >= 5;
+    h += `<div class="gbig ${ap?"ok":"bad"}"><span>Nota definitiva</span><strong>${r.finalNow}</strong><em>${accTxt} redondeado · ${ap?"Aprobada 🎉":"Reprobada"}</em></div>`;
+  } else {
+    const n = r.need(G.goal);
+    const cada = r.nPend > 1 ? ` en cada uno de los ${r.nPend} parciales que faltan` : " en el parcial que falta";
+    if (n === 0) h += `<div class="gbig ok"><span>Meta: ${G.goal}</span><strong>¡Ya la tienes!</strong><em>Con lo que llevas ya alcanzas ${G.goal} de definitiva, aunque saques 1 en lo que falta.</em></div>`;
+    else if (n === null) h += `<div class="gbig bad"><span>Meta: ${G.goal}</span><strong>No alcanza</strong><em>Aunque saques 100${cada}, lo máximo que puedes tener es ${r.maxFinal}.</em></div>`;
+    else h += `<div class="gbig"><span>Para tener ${G.goal} necesitas</span><strong>${n}<small>/100</small></strong><em>${cada.trim().replace(/^en/,"En")} (${+r.pendP.toFixed(2)}% de la nota). Equivale a ${conv(n).toFixed(1).replace(".",",")} de 9.</em></div>`;
+    h += `<div class="gtable">${[5,6,7,8,9].map(g => { const x = r.need(g);
+        return `<div class="${g===G.goal?"on":""}"><span>${g}</span><b>${x===0?"✓":x===null?"✗":x}</b></div>`; }).join("")}</div>
+      <p class="note" style="margin:6px 0 0">Nota mínima de 1 a 100 que necesitas${r.nPend>1?" en cada parcial pendiente":""} para cada definitiva. ✓ ya la tienes · ✗ no alcanza.</p>`;
+  }
+  $("gRes").innerHTML = h;
+}
+
+// ---------- render ----------
+const $ = id => document.getElementById(id);
+const DOT = '<svg class="dot" viewBox="0 0 28 28" aria-hidden="true"><circle class="r" cx="14" cy="14" r="11.5"/><path class="k" d="M8.8 14.4l3.5 3.5 7-7.6"/></svg>';
+const THINK = cls => `<svg class="tb ${cls}" viewBox="0 0 28 28" aria-hidden="true"><path class="c" d="M8.5 17a4 4 0 0 1-.6-7.9 5.2 5.2 0 0 1 9.8-2.3 4.3 4.3 0 0 1 6.3 3.8 3.4 3.4 0 0 1-1.4 6.4z"/><circle class="c" cx="7.4" cy="21.4" r="2"/><circle class="c" cx="4.2" cy="25" r="1.3"/><circle class="d" cx="11.6" cy="12.6" r="1.35"/><circle class="d" cx="15.6" cy="12.6" r="1.35"/><circle class="d" cx="19.6" cy="12.6" r="1.35"/></svg>`;
+const CHECK = DOT + THINK("");   // círculo = pendiente/aprobada · nube de pensamiento = inscrita
+$("mkEIcon").outerHTML = THINK("mk");
+function statusOf(c){
+  if (S.a.has(c.key)) return '<span class="st ok">Aprobada</span>';
+  if (S.e.has(c.key)) return '<span class="st en">Inscrita · cursando</span>';
+  const m = missing(c, S.a);
+  if (!m.length){
+    const pend = (c.co||[]).filter(k=>!S.a.has(k));
+    return pend.length ? `<span class="st av">Disponible</span><span>junto con ${pend.map(nm).join(", ")}</span>` : '<span class="st av">Disponible</span>';
+  }
+  return `<span class="st lk">Bloqueada</span><span>Falta: ${m.join(", ")}</span>`;
+}
+// Resaltadores pastel: lavanda para las electivas; durazno, mantequilla, menta, rosado y celeste por semestre
+const HL = ["204,188,255","255,206,170","255,232,140","170,234,200","255,190,214","176,214,248"];
+let FRESH = null;   // la materia recién aprobada se "pinta" con una pasada de resaltador
+function row(c){
+  const on = S.a.has(c.key), hl = HL[c.elective ? 0 : ((c.sem-1)%5)+1];
+  return `<button class="row${S.e.has(c.key)?" enr":""}${on&&c.key===FRESH?" hl-in":""}" data-k="${c.key}" aria-pressed="${on}" style="--hl:${hl}">
+    <span class="ck">${CHECK}</span>
+    <span class="tx"><span class="nm"><span class="hl">${c.name}</span></span>
+      <span class="sub">${c.code?`<span class="code">${c.code}</span>`:""}${statusOf(c)}</span></span>
+    <span class="uc">${c.uc} U.C.</span></button>`;
+}
+function electGroup(){
+  const n = ELECT.filter(e=>S.a.has(e.key)).length;
+  return `<div class="elh"><span class="chip" style="${chipStyle(0)};height:24px;min-width:34px;font-size:12.5px">EL</span><b>Electivas</b><span>${Math.min(n,ELECT_NEEDED)}/${ELECT_NEEDED} aprobadas · elige ${ELECT_NEEDED} de la lista</span></div>
+    <div class="list">${ELECT.map(row).join("")}</div>
+    <p class="note">Se cursan 3 electivas en cadena: <b>Electiva I</b> en el semestre VII, <b>Electiva II</b> en el VIII (requiere la I) y <b>Electiva III</b> en el IX (requiere la II). Llevas ${electCount(S.a)}/3.</p>`;
+}
+function renderMaterias(uc){
+  let h = "";
+  for (let s=1;s<=9;s++){
+    const cs = CORE.filter(c=>c.sem===s);
+    const done = cs.filter(c=>S.a.has(c.key)), ucS = cs.reduce((t,c)=>t+c.uc,0), ucD = done.reduce((t,c)=>t+c.uc,0);
+    const all = done.length===cs.length;
+    h += `<div class="sem"><div class="semh"><span class="chip" style="${chipStyle(s)}">${ROMAN[s]}</span>
+      <div><h2>Semestre ${ROMAN[s]}</h2><div class="meta">${done.length}/${cs.length} materias · ${ucD}/${ucS} U.C.${s>=7?" + electiva":""}</div></div>
+      ${MARK==="a"?`<button class="all" data-sem="${s}" data-on="${all?0:1}">${all?"Desmarcar":"Marcar todo"}</button>`:""}</div>
+      <div class="list">${cs.map(row).join("")}</div>
+      ${s===7?electGroup():""}</div>`;
+  }
+  const allDone = CORE.every(c=>S.a.has(c.key)) && electCount(S.a)>=ELECT_NEEDED;
+  h += `<div class="sem"><div class="semh"><span class="chip" style="${chipStyle(10)}">X</span>
+    <div><h2>Trabajo de Aplicación Profesional</h2><div class="meta">T.A.P. · 12 U.C.</div></div></div>
+    <div class="list" style="padding:12px 14px;display:grid;gap:6px;font-size:14px">
+      <div>Va en el semestre X, al terminar las materias del pensum (${COURSE_UC} U.C.). ${allDone?'<span class="st ok">Materias completas</span>':`<span class="st lk">Te faltan ${COURSE_UC-uc} U.C.</span>`}</div>
+    </div></div>`;
+  $("semList").innerHTML = h;
+}
+function whyChips(c){
+  if (c.slot) return '<span class="st av">Electiva</span>';
+  const w = [];
+  if (CHAIN[c.key] >= 2) w.push(`<span class="st wn">Ruta crítica</span>`);
+  if (UNLOCK[c.key]) w.push(`<button class="st av opener" data-open="${c.key}" aria-expanded="${OPEN.has(c.key)}">Abre ${UNLOCK[c.key]} materia${UNLOCK[c.key]>1?"s":""} <span class="car" aria-hidden="true">▾</span></button>`);
+  if ((c.co||[]).length) w.push(`<span class="st lk">Correquisito: ${c.co.map(nm).join(", ")}</span>`);
+  if (!w.length) w.push('<span class="st lk">No prela otras</span>');
+  return w.join("");
+}
+function opensPanel(c){
+  if (!OPEN.has(c.key)) return "";
+  const direct = (DEPS[c.key]||[]).map(k=>BY[k]).sort((p,q)=>p.sem-q.sem);
+  const dset = new Set(direct.map(x=>x.key));
+  const later = [...unlockSet(c.key)].filter(k=>!dset.has(k)).map(k=>BY[k]).sort((p,q)=>p.sem-q.sem);
+  const item = d => { const other = [...d.pre, ...d.co].filter(p=>p!==c.key && !S.a.has(p)).map(nm);
+    return `<li><span class="chip" style="${chipStyle(d.sem)};height:20px;min-width:30px;font-size:11px">${ROMAN[d.sem]}</span>
+      <span><b>${d.name}</b>${other.length?`<em>También necesita: ${other.join(", ")}</em>`:`<em>Se abre apenas apruebes esta</em>`}</span></li>`; };
+  let h = `<div class="opens"><p>Al aprobarla puedes inscribir:</p><ul>${direct.map(item).join("")}</ul>`;
+  if (later.length){
+    const bySem = {}; later.forEach(d => (bySem[d.sem] = bySem[d.sem]||[]).push(d.name));
+    h += `<p>Y más adelante, en cadena:</p><div class="later">${Object.keys(bySem).map(s=>`<div><span class="chip" style="${chipStyle(+s)};height:18px;min-width:28px;font-size:10.5px">${ROMAN[s]}</span> ${bySem[s].join(" · ")}</div>`).join("")}</div>`;
+  }
+  return h + `</div>`;
+}
+function renderInscribir(){
+  const L = S.lim[S.mode];
+  $("mSem").setAttribute("aria-pressed", S.mode==="sem"); $("mInt").setAttribute("aria-pressed", S.mode==="int");
+  $("oUC").textContent = L.uc; $("oN").textContent = L.n;
+  const r = recommend(plusE(), L, S.x);
+  $("recList").innerHTML = r.picked.length ? r.picked.map(c => `<div class="ri">
+      <span class="chip" style="${chipStyle(c.slot?0:c.sem)}">${c.slot?"EL":ROMAN[c.sem]}</span>
+      <div class="tx"><div class="nm" style="font-weight:600">${c.name}${c.code?` <span class="code">${c.code}</span>`:""}</div>
+        <div class="why">${whyChips(c)}</div>
+        ${c.slot?"":opensPanel(c)}
+        ${c.slot?`<div class="opts"><div><b>Puedes elegir:</b> ${c.options.map(e=>e.name).join(" · ")}</div></div>`:""}</div>
+      <span class="uc">${c.uc}</span></div>`).join("")
+    : `<div class="empty">${CORE.every(c=>S.a.has(c.key)) ? "¡Ya aprobaste todas las materias! Te queda el Trabajo de Aplicación Profesional (T.A.P.)." : "No hay materias disponibles con estos límites. Sube el máximo de U.C. o revisa las que marcaste como no ofertadas."}</div>`;
+  $("recNote").hidden = !S.e.size;
+  if (S.e.size) $("recNote").textContent = `Para el próximo semestre, suponiendo que apruebas las ${S.e.size} materia${S.e.size>1?"s":""} que estás cursando.`;
+  $("recTot").innerHTML = r.picked.length ? `<span>${r.n} materia${r.n!==1?"s":""}</span><b>${r.uc} U.C.</b>` : "";
+  const others = r.cand.filter(c=>!r.pk.has(c.key));
+  const ex = [...S.x].map(k=>BY[k]).filter(Boolean);
+  let h = others.map(c => `<div class="mini"><span class="chip" style="${chipStyle(c.sem)};height:24px;min-width:34px;font-size:13px">${ROMAN[c.sem]}</span>
+      <div class="tx">${c.name} <span class="uc" style="font-size:13px">· ${c.uc} U.C.</span></div>
+      <button class="ghost" data-x="${c.key}">No la ofertaron</button></div>`).join("");
+  if (!others.length) h = '<div class="empty">No hay más materias disponibles fuera de la recomendación.</div>';
+  if (ex.length) h += `<p class="note" style="margin-top:12px">Marcadas como no ofertadas:</p>` + ex.map(c => `<div class="mini"><div class="tx" style="color:var(--muted)">${c.name}</div>
+      <button class="ghost" data-in="${c.key}">Volver a incluir</button></div>`).join("");
+  $("otherList").innerHTML = h;
+}
+function renderPlan(){
+  const p = projection();
+  const n = p.sems.length;
+  $("sSem").textContent = p.complete ? (n + 1) : "–";
+  $("planTitle").textContent = p.complete ? `Te faltan ${n} semestre${n!==1?"s":""}${S.e.size?" (contando el actual)":""} + el T.A.P.` : "Tu ruta hasta el grado";
+  const off = p.sems.length && p.sems[0].current ? 0 : 1;
+  let h = p.sems.map((r,i) => `<div class="ps${r.current?" cur":""}"><header><b>${r.current?"Semestre actual (inscritas)":(i+off===1?"Próximo semestre":(i+off)+".º semestre")}</b><span>${r.n} materia${r.n!==1?"s":""} · ${r.uc} U.C.</span></header>
+    <ul>${r.picked.map(c=>`<li><i style="background:${SEMC[c.slot?0:c.sem]}"></i><span>${c.name}</span><em>${c.uc} U.C.</em></li>`).join("")}</ul></div>`).join("");
+  if (p.complete) h += `<div class="ps fin"><header><b>Trabajo de Aplicación Profesional</b><span>12 U.C.</span></header>
+    <ul><li><span>El último paso: el T.A.P. va al terminar todas las materias del pensum.</span></li></ul></div>`;
+  else if (!n) h += `<div class="empty">Marca tus materias aprobadas para calcular tu ruta.</div>`;
+  else h += `<div class="empty">Con los límites actuales no se completa el pensum. Revisa el máximo de U.C.</div>`;
+  $("planList").innerHTML = h;
+}
+function renderSummary(uc){
+  $("sUC").textContent = uc;
+  const ec = [...S.e].map(k=>BY[k]);
+  $("sCur").hidden = !ec.length;
+  if (ec.length) $("sCur").innerHTML = `${THINK("")}Cursando ${ec.length} materia${ec.length>1?"s":""} · ${ec.reduce((t,c)=>t+c.uc,0)} U.C. este semestre`;
+  const done = CORE.filter(c=>S.a.has(c.key)).length;
+  $("sMat").textContent = `${done}/${CORE.length}`;
+  $("sEl").textContent = `${electCount(S.a)}/${ELECT_NEEDED}`;
+  let bar = "";
+  for (let s=1;s<=9;s++){ const u = CORE.filter(c=>c.sem===s&&S.a.has(c.key)).reduce((t,c)=>t+c.uc,0); if(u) bar += `<i style="width:${u/TOTAL_UC*100}%;background:${SEMC[s]}"></i>`; }
+  const ue = electCount(S.a)*ELECT_UC; if (ue) bar += `<i style="width:${ue/TOTAL_UC*100}%;background:${SEMC[0]}"></i>`;
+  $("sBar").innerHTML = bar;
+}
+function render(){
+  const uc = ucOf(S.a);
+  renderSummary(uc); renderMaterias(uc); renderInscribir(); renderPlan(); renderNotas();
+  $("bkCode").textContent = encode();
+}
+
+// ---------- respaldo ----------
+function hexOf(set){
+  let bits = ORDER.map(k => set.has(k)?1:0); while (bits.length % 4) bits.push(0);
+  let hex = ""; for (let i=0;i<bits.length;i+=4) hex += ((bits[i]<<3)|(bits[i+1]<<2)|(bits[i+2]<<1)|bits[i+3]).toString(16);
+  return hex.toUpperCase();
+}
+function encode(){ return "PS1-" + hexOf(S.a) + (S.e.size ? "-" + hexOf(S.e).replace(/0+$/,"") : ""); }
+function decode(code){
+  const m = /^PS1-([0-9A-F]+)(?:-([0-9A-F]*))?$/i.exec(code.trim().replace(/\s+/g,""));
+  if (!m) return null;
+  const read = hx => { const set = new Set(); [...(hx||"")].forEach((h,i) => { const v = parseInt(h,16); for (let b=0;b<4;b++) if (v & (8>>b)) { const k = ORDER[i*4+b]; if (k) set.add(k); } }); return set; };
+  const a = read(m[1]); a.e = read(m[2]); return a;
+}
+
+// ---------- eventos ----------
+function toggle(k){
+  if (MARK==="e"){ if (S.e.has(k)) S.e.delete(k); else { S.e.add(k); S.a.delete(k); } }
+  else { if (S.a.has(k)) S.a.delete(k); else { S.a.add(k); S.e.delete(k); FRESH = k; } }
+  save(); render(); FRESH = null; }
+function setMark(m){ MARK = m; $("mkA").setAttribute("aria-pressed", m==="a"); $("mkE").setAttribute("aria-pressed", m==="e"); render(); }
+$("semList").addEventListener("click", e => {
+  const r = e.target.closest(".row"); if (r) return toggle(r.dataset.k);
+  const b = e.target.closest(".all"); if (b){ const s = +b.dataset.sem, on = b.dataset.on==="1";
+    CORE.filter(c=>c.sem===s).forEach(c => { if (on){ S.a.add(c.key); S.e.delete(c.key); } else S.a.delete(c.key); }); save(); render(); }
+});
+$("gRows").addEventListener("input", e => {
+  const row = e.target.closest(".grow"); if (!row) return;
+  const G = evalsOf(S.gk), i = +row.dataset.i, f = e.target.dataset.f; if (!f) return;
+  G.ev[i][f] = e.target.value;
+  if (f === "n") row.querySelector(".gc").textContent = num(e.target.value)!==null ? conv(e.target.value).toFixed(1) : "–";
+  save(); renderGradeResult();
+});
+$("gRows").addEventListener("click", e => { const d = e.target.closest("[data-del]"); if (!d) return;
+  const G = evalsOf(S.gk); G.ev.splice(+d.dataset.del, 1); if (!G.ev.length) G.ev.push({l:"Parcial 1", p:100, n:""}); save(); renderNotas(); });
+$("gAdd").onclick = () => { const G = evalsOf(S.gk); if (G.ev.length >= 12) return; G.ev.push({l:"Parcial " + (G.ev.length+1), p:"", n:""}); save(); renderNotas();
+  const ins = $("gRows").querySelectorAll('input[data-f="p"]'); ins[ins.length-1].focus(); };
+$("gReset").onclick = () => { S.g[S.gk] = {ev:defEvals(), goal:5}; save(); renderNotas(); };
+$("gCount").addEventListener("click", e => { const b = e.target.closest("[data-count]"); if (!b) return;
+  const n = +b.dataset.count, G = evalsOf(S.gk), base = Math.floor(100/n), extra = 100 - base*n;
+  G.ev = Array.from({length:n}, (_,i) => ({l: (G.ev[i] && G.ev[i].l) || ("Parcial " + (i+1)), p: base + (i >= n - extra ? 1 : 0), n: G.ev[i] ? G.ev[i].n : ""}));
+  save(); renderNotas(); });
+$("gGoals").addEventListener("click", e => { const b = e.target.closest("[data-goal]"); if (!b) return; evalsOf(S.gk).goal = +b.dataset.goal; save(); renderNotas(); });
+$("cvIn").addEventListener("input", e => { const v = num(e.target.value); $("cvOut").textContent = v===null ? "–" : conv(v).toFixed(1).replace(".",","); });
+$("mkA").onclick = () => setMark("a"); $("mkE").onclick = () => setMark("e");
+$("finSem").onclick = () => { if (!S.e.size){ $("finMsg").className="msg bad"; $("finMsg").textContent="No tienes materias marcadas como inscritas."; return; }
+  const n = S.e.size; S.e.forEach(k=>S.a.add(k)); S.e = new Set(); save(); render();
+  $("finMsg").className="msg ok"; $("finMsg").textContent=`Listo: ${n} materia${n>1?"s":""} pasaron a aprobadas. Si reprobaste alguna, desmárcala en Materias.`; };
+$("recList").addEventListener("click", e => {
+  const o = e.target.closest(".opener"); if (!o) return;
+  const k = o.dataset.open; OPEN.has(k) ? OPEN.delete(k) : OPEN.add(k); renderInscribir();
+});
+$("otherList").addEventListener("click", e => {
+  const x = e.target.closest("[data-x]"), i = e.target.closest("[data-in]");
+  if (x){ S.x.add(x.dataset.x); save(); render(); } if (i){ S.x.delete(i.dataset.in); save(); render(); }
+});
+$("mSem").onclick = () => { S.mode="sem"; save(); render(); };
+$("mInt").onclick = () => { S.mode="int"; save(); render(); };
+const bump = (f,d,min,max) => () => { const L = S.lim[S.mode]; L[f] = Math.max(min, Math.min(max, L[f]+d)); save(); render(); };
+$("ucMinus").onclick = bump("uc",-1,1,30); $("ucPlus").onclick = bump("uc",1,1,30);
+$("nMinus").onclick = bump("n",-1,1,12); $("nPlus").onclick = bump("n",1,1,12);
+
+const TABS = ["materias","inscribir","plan","notas"];
+function show(t){ if (!TABS.includes(t)) t = "materias";
+  TABS.forEach(x => { $("v-"+x).hidden = x!==t; $("t-"+x).setAttribute("aria-selected", x===t); });
+  $("tools").hidden = t === "notas"; }
+TABS.forEach(t => $("t-"+t).onclick = () => { if (location.hash !== "#"+t) location.hash = t; else show(t); window.scrollTo({top:$("v-materias").parentElement.offsetTop-70, behavior:"smooth"}); });
+window.addEventListener("hashchange", () => show(location.hash.slice(1)));
+
+$("qSem").innerHTML = [1,2,3,4,5,6,7,8,9].map(s=>`<option value="${s}">Hasta el semestre ${ROMAN[s]}</option>`).join("");
+$("qSem").value = "4";
+$("qGo").onclick = () => { const s = +$("qSem").value; CORE.filter(c=>c.sem<=s).forEach(c=>{ S.a.add(c.key); S.e.delete(c.key); }); save(); render(); show("materias"); };
+
+$("bkCopy").onclick = async () => { const c = encode();
+  try { await navigator.clipboard.writeText(c); $("bkMsg").className="msg ok"; $("bkMsg").textContent = "Código copiado."; }
+  catch(e){ const r = document.createRange(); r.selectNodeContents($("bkCode")); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+    $("bkMsg").className="msg"; $("bkMsg").textContent = "Selecciona el código y cópialo manualmente."; } };
+$("bkLoad").onclick = () => { const a = decode($("bkIn").value);
+  if (!a){ $("bkMsg").className="msg bad"; $("bkMsg").textContent = "Ese código no es válido. Debe empezar por PS1-."; return; }
+  S.e = new Set([...a.e].filter(k=>!a.has(k))); S.a = new Set(a); save(); render(); $("bkIn").value=""; $("bkMsg").className="msg ok"; $("bkMsg").textContent = `Progreso cargado: ${a.size} materias aprobadas.`; };
+$("rst").onclick = () => { $("rst").hidden = true; $("rstYes").hidden = false; $("rstNo").hidden = false; };
+$("rstNo").onclick = () => { $("rst").hidden = false; $("rstYes").hidden = true; $("rstNo").hidden = true; };
+$("rstYes").onclick = () => { S.a = new Set(); S.e = new Set(); S.x = new Set(); save(); render(); $("rstNo").onclick(); };
+
+// ---------- Cuenta: guardar en la nube con Firebase (solo en la versión publicada) ----------
+const FB_CONFIG = null;   // aquí va el bloque firebaseConfig del proyecto de Firebase de Psicología
+const FB_V = "10.12.2";
+(function cloud(){
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{}); } catch(e){}
+  if (!FB_CONFIG || location.protocol !== "https:") return;
+  const acct = $("acct"); acct.hidden = false;
+  const load = src => new Promise((ok, ko) => { const s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = ko; document.head.appendChild(s); });
+  const base = `https://www.gstatic.com/firebasejs/${FB_V}/`;
+  let auth = null, fs = null, unsub = null, user = null;
+  const ERR = {
+    "auth/invalid-email":"Ese correo no es válido.",
+    "auth/invalid-credential":"Correo o contraseña incorrectos.",
+    "auth/wrong-password":"Correo o contraseña incorrectos.",
+    "auth/user-not-found":"No hay ninguna cuenta con ese correo. Toca “Crear cuenta”.",
+    "auth/email-already-in-use":"Ya existe una cuenta con ese correo. Toca “Entrar”.",
+    "auth/weak-password":"La contraseña debe tener al menos 6 caracteres.",
+    "auth/missing-password":"Escribe tu contraseña.",
+    "auth/too-many-requests":"Demasiados intentos. Espera unos minutos y vuelve a probar.",
+    "auth/network-request-failed":"No hay conexión a internet.",
+    "auth/popup-closed-by-user":"Cerraste la ventana de Google antes de terminar.",
+    "auth/popup-blocked":"El teléfono bloqueó la ventana de Google. Usa correo y contraseña.",
+    "auth/operation-not-supported-in-this-environment":"Google no funciona dentro de la app instalada en este teléfono. Usa correo y contraseña.",
+    "auth/unauthorized-domain":"Este sitio todavía no está autorizado en Firebase."
+  };
+  const say = (t, ok) => { const m = $("acMsg"); m.className = "msg " + (ok ? "ok" : "bad"); m.textContent = t; };
+  const errMsg = e => ERR[e && e.code] || "No se pudo completar. Inténtalo otra vez.";
+  const sheet = $("acSheet");
+  const open = () => { sheet.hidden = false; $("acMsg").textContent = ""; renderAcct(); };
+  const close = () => { sheet.hidden = true; };
+  $("acBtn").onclick = open; $("acClose").onclick = close;
+  sheet.addEventListener("click", e => { if (e.target === sheet) close(); });
+  function renderAcct(){
+    $("acOut").hidden = !!user; $("acIn").hidden = !user;
+    $("acBtn").textContent = user ? "Mi cuenta" : "Guardar en la nube";
+    if (user) $("acWho").textContent = user.email || "tu cuenta de Google";
+  }
+  async function start(){
+    try {
+      await load(base + "firebase-app-compat.js");
+      await Promise.all([load(base + "firebase-auth-compat.js"), load(base + "firebase-firestore-compat.js")]);
+    } catch(e){ $("acBtn").disabled = true; $("acBtn").textContent = "Sin conexión"; return; }
+    firebase.initializeApp(FB_CONFIG);
+    auth = firebase.auth(); fs = firebase.firestore();
+    auth.languageCode = "es";
+    auth.onAuthStateChanged(async u => {
+      user = u; renderAcct();
+      if (unsub){ unsub(); unsub = null; }
+      if (!u){ dbRef = null; setSync(""); return; }
+      const ref = fs.collection("progreso").doc(u.uid);
+      setSync("Conectando con tu cuenta…");
+      try {
+        const snap = await ref.get();
+        const d = snap.exists ? snap.data() : null;
+        if (d && (d.t||0) > (S.t||0)){ applyRaw(d); try{ localStorage.setItem(LS, JSON.stringify(raw())); }catch(e){} render(); }
+        else if (S.t) { await ref.set(raw()); }
+        dbRef = ref;
+        setSync("Guardado en la nube con " + (u.email || "tu cuenta") + ". Aparece en cualquier teléfono donde inicies sesión.");
+        unsub = ref.onSnapshot(s => { if (s.metadata.hasPendingWrites || !s.exists) return; const c = s.data();
+          if ((c.t||0) > (S.t||0)){ applyRaw(c); try{ localStorage.setItem(LS, JSON.stringify(raw())); }catch(e){} render(); } }, () => {});
+      } catch(e){ setSync("No se pudo conectar con tu cuenta. Tu progreso sigue guardado en este teléfono."); }
+    });
+  }
+  $("acGoogle").onclick = async () => {
+    try { await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); say("Listo, ya iniciaste sesión.", true); setTimeout(close, 900); }
+    catch(e){ say(errMsg(e)); }
+  };
+  const creds = () => [$("acEmail").value.trim(), $("acPass").value];
+  $("acLogin").onclick = async () => { const [e,p] = creds();
+    try { await auth.signInWithEmailAndPassword(e,p); say("Listo, ya iniciaste sesión.", true); setTimeout(close, 900); } catch(err){ say(errMsg(err)); } };
+  $("acSignup").onclick = async () => { const [e,p] = creds();
+    try { await auth.createUserWithEmailAndPassword(e,p); say("Cuenta creada. Tus materias ya se guardan en la nube.", true); setTimeout(close, 1200); } catch(err){ say(errMsg(err)); } };
+  $("acReset").onclick = async () => { const [e] = creds();
+    if (!e) return say("Escribe tu correo arriba y vuelve a tocar aquí.");
+    try { await auth.sendPasswordResetEmail(e); say("Te enviamos un correo para cambiar la contraseña. Revisa también la carpeta de spam.", true); } catch(err){ say(errMsg(err)); } };
+  $("acEye").onclick = () => { const i = $("acPass"), show = i.type === "password";
+    i.type = show ? "text" : "password"; $("acEye").setAttribute("aria-pressed", show);
+    $("acEye").setAttribute("aria-label", show ? "Ocultar contraseña" : "Mostrar contraseña"); $("acEyeT").textContent = show ? "Ocultar" : "Ver"; };
+  $("acLogout").onclick = async () => { await auth.signOut(); say("Cerraste sesión. Tus materias siguen en este teléfono.", true); };
+  start();
+})();
+
+// ---------- inicio ----------
+loadLocal(); render(); show(location.hash.slice(1));
+
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js", {updateViaCache: "none"}).then(r => r.update()).catch(() => {}));
+}
+
+// Fondo: la mente. Arriba, neuronas con dendritas unidas por axones por donde viajan impulsos pastel (sinapsis).
+// Abajo, dos personas de perfil conversando; de vez en cuando a una le sale una burbuja de pensamiento.
+(function(){
+  const cv = document.getElementById("bg"); if (!cv || !cv.getContext) return;
+  const ctx = cv.getContext("2d");
+  const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const TAU = Math.PI*2, rnd = (a,b) => a + Math.random()*(b-a), pick = a => a[Math.floor(Math.random()*a.length)];
+  const COLS = ["196,178,255","158,232,200","166,210,255","255,194,161","255,177,203","255,227,155"];
+  const SYMS = ["heart","?","smile","!","Ψ","spiral","sad","zZ","bulb","…"];
+  const SPEED = 80;   // px/s de los impulsos
+  let W=0,H=0,dpr=1,base=null,N=[],E=[],pulses=[],queue=[],heads=[],bubbles=[],t=0,last=0,raf=0,nextFire=0,nextBubble=0,SB=0;
+  function safeBottom(){ const p = document.createElement("div"); p.style.cssText = "position:fixed;bottom:0;height:env(safe-area-inset-bottom,0px);width:1px;visibility:hidden";
+    document.body.appendChild(p); const h = p.offsetHeight; p.remove(); return h; }
+  // Silueta de una cabeza de perfil mirando a la derecha, en una caja de 1 × 1.3 (la nuca en x≈0, la nariz en x≈1)
+  function headPath(c, x, y, s, dir){
+    const P = (u,v) => [x + (dir > 0 ? u : 1-u)*s, y + v*s];
+    const seg = [[[.24,1.15],[.22,1.05],[.16,.95]],[[.02,.80],[-.02,.45],[.12,.24]],[[.26,.02],[.62,-.04],[.80,.14]],[[.88,.22],[.90,.32],[.88,.42]],
+      [[.90,.48],[.97,.56],[.99,.61]],[[1,.64],[.95,.66],[.90,.665]],[[.92,.70],[.92,.72],[.895,.735]],[[.92,.76],[.91,.79],[.885,.80]],
+      [[.90,.86],[.88,.92],[.80,.94]],[[.72,.96],[.68,.98],[.66,1.05]]];
+    c.beginPath(); c.moveTo(...P(.22,1.3)); seg.forEach(q => c.bezierCurveTo(...P(...q[0]), ...P(...q[1]), ...P(...q[2]))); c.lineTo(...P(.66,1.3)); c.closePath();
+  }
+  // Símbolos de pensamientos y emociones
+  function sym(c, type, x, y, u, col, a){
+    c.save(); c.translate(x,y); c.globalAlpha = a; c.fillStyle = c.strokeStyle = `rgb(${col})`; c.lineWidth = Math.max(1.1, u*.16); c.lineCap = c.lineJoin = "round";
+    if (type === "heart"){ c.beginPath(); c.moveTo(0,.62*u); c.bezierCurveTo(-1.05*u,0,-.5*u,-.85*u,0,-.3*u); c.bezierCurveTo(.5*u,-.85*u,1.05*u,0,0,.62*u); c.fill(); }
+    else if (type === "smile" || type === "sad"){ c.beginPath(); c.arc(0,0,.8*u,0,TAU); c.stroke();
+      c.beginPath(); c.arc(-.3*u,-.2*u,.1*u,0,TAU); c.arc(.3*u,-.2*u,.1*u,0,TAU); c.fill();
+      c.beginPath(); if (type === "smile") c.arc(0,.05*u,.42*u,.15*Math.PI,.85*Math.PI); else c.arc(0,.6*u,.38*u,1.18*Math.PI,1.82*Math.PI); c.stroke(); }
+    else if (type === "spiral"){ c.beginPath(); for (let th=0; th<3.6*Math.PI; th+=.2){ const r = .085*u*th; th ? c.lineTo(Math.cos(th)*r, Math.sin(th)*r) : c.moveTo(0,0); } c.stroke(); }
+    else if (type === "bulb"){ c.beginPath(); c.arc(0,-.15*u,.55*u,.8*Math.PI,2.2*Math.PI); c.lineTo(.22*u,.5*u); c.lineTo(-.22*u,.5*u); c.closePath(); c.stroke();
+      c.beginPath(); c.moveTo(-.2*u,.72*u); c.lineTo(.2*u,.72*u); c.stroke(); }
+    else { c.font = `700 ${(type.length > 1 ? 1.15 : 1.6)*u}px Fraunces, Georgia, serif`; c.textAlign = "center"; c.textBaseline = "middle"; c.fillText(type, 0, type === "…" ? -.25*u : .08*u); }
+    c.restore();
+  }
+  const tmp = document.createElement("canvas"), tc = tmp.getContext("2d");
+  function cloud(c, x, y, r, col, a){   // burbuja de pensamiento: varios círculos unidos, solo con el contorno exterior
+    const bumps = [[0,0,1],[-.75,.15,.62],[.75,.15,.62],[-.4,-.45,.6],[.38,-.48,.62],[0,.5,.55]], S = Math.ceil(r*4.2);
+    if (tmp.width !== S*dpr){ tmp.width = tmp.height = S*dpr; } tc.setTransform(dpr,0,0,dpr,0,0); tc.clearRect(0,0,S,S);
+    const cx = S/2, cy = S/2;   // se dibuja aparte y opaca, y luego se pega con transparencia (así no se ven los círculos por dentro)
+    tc.strokeStyle = `rgba(${col},.8)`; tc.lineWidth = 2.4; bumps.forEach(b => { tc.beginPath(); tc.arc(cx+b[0]*r, cy+b[1]*r, b[2]*r, 0, TAU); tc.stroke(); });
+    tc.fillStyle = "#1E1830"; bumps.forEach(b => { tc.beginPath(); tc.arc(cx+b[0]*r, cy+b[1]*r, b[2]*r, 0, TAU); tc.fill(); });
+    c.save(); c.globalAlpha = a; c.drawImage(tmp, x - S/2, y - S/2, S, S); c.restore();
+  }
+  function build(){
+    dpr = Math.min(2, window.devicePixelRatio||1);
+    W = innerWidth; H = innerHeight; cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+    base = document.createElement("canvas"); base.width = cv.width; base.height = cv.height;
+    const b = base.getContext("2d"); b.scale(dpr,dpr); b.lineCap = "round";
+    const g = b.createLinearGradient(0,0,0,H); g.addColorStop(0,"#140F1F"); g.addColorStop(1,"#0B0911");
+    b.fillStyle = g; b.fillRect(0,0,W,H);
+    const rg = b.createRadialGradient(W*.5,H*.2,0,W*.5,H*.2,Math.max(W,H)*.75); rg.addColorStop(0,"rgba(120,90,200,.15)"); rg.addColorStop(1,"rgba(120,90,200,0)");
+    b.fillStyle = rg; b.fillRect(0,0,W,H);
+    const sb = safeBottom(); SB = H - 92 - sb;
+    // neuronas repartidas con una distancia mínima entre ellas
+    const minD = Math.max(120, Math.min(190, Math.sqrt(W*SB/9)));
+    N = [];
+    for (let k=0;k<3000;k++){
+      const x = rnd(14, W-14), y = rnd(14, SB-20);
+      if (N.every(n => (n.x-x)**2 + (n.y-y)**2 > minD*minD)) N.push({x, y, r:rnd(2.8,4.4), c:COLS[N.length % COLS.length], glow:0, adj:[]});
+    }
+    // axones: cada neurona se une a sus 2 vecinas más cercanas, con una curva suave
+    E = []; const seen = new Set();
+    N.forEach((n,i) => {
+      N.map((m,j) => [j, (m.x-n.x)**2 + (m.y-n.y)**2]).filter(p => p[0]!==i && p[1] < (minD*2.1)**2).sort((p,q)=>p[1]-q[1]).slice(0,2).forEach(([j]) => {
+        const key = i<j ? i+"-"+j : j+"-"+i; if (seen.has(key)) return; seen.add(key);
+        const m = N[j], dx = m.x-n.x, dy = m.y-n.y, L = Math.hypot(dx,dy), k = rnd(-.28,.28);
+        const cx = (n.x+m.x)/2 - dy*k, cy = (n.y+m.y)/2 + dx*k, steps = Math.ceil(L/3), pts = [];
+        for (let s=0;s<=steps;s++){ const u = s/steps, v = 1-u; pts.push([v*v*n.x + 2*v*u*cx + u*u*m.x, v*v*n.y + 2*v*u*cy + u*u*m.y]); }
+        E.push({a:i, b:j, pts, cx, cy}); n.adj.push(E.length-1); m.adj.push(E.length-1);
+      });
+    });
+    E.forEach(e => { const a = N[e.a], m = N[e.b];
+      const lg = b.createLinearGradient(a.x,a.y,m.x,m.y); lg.addColorStop(0,`rgba(${a.c},.1)`); lg.addColorStop(1,`rgba(${m.c},.1)`);
+      b.strokeStyle = lg; b.lineWidth = 1.1; b.beginPath(); b.moveTo(a.x,a.y); b.quadraticCurveTo(e.cx,e.cy,m.x,m.y); b.stroke(); });
+    // dendritas: ramas finas que salen del cuerpo de la neurona, se curvan y se bifurcan
+    const branch = (x,y,ang,len,w,col,depth) => {
+      let px = x, py = y; const n = Math.max(3, Math.round(len/4)), fork = Math.round(n*rnd(.35,.6));
+      for (let s=1;s<=n;s++){
+        ang += rnd(-.3,.3); const nx = px + Math.cos(ang)*len/n, ny = py + Math.sin(ang)*len/n;
+        b.strokeStyle = `rgba(${col},${(.22*(1 - s/n*.6)).toFixed(3)})`; b.lineWidth = Math.max(.45, w*(1 - s/n*.7));
+        b.beginPath(); b.moveTo(px,py); b.lineTo(nx,ny); b.stroke(); px = nx; py = ny;
+        if (depth < 2 && s === fork && Math.random() < .8) branch(px, py, ang + (Math.random()<.5?-1:1)*rnd(.45,.9), len*rnd(.45,.62), w*.6, col, depth+1);
+      }
+    };
+    N.forEach(n => {
+      const k = Math.round(rnd(5,7)), a0 = rnd(0,TAU);
+      for (let i=0;i<k;i++) branch(n.x, n.y, a0 + i*TAU/k + rnd(-.3,.3), rnd(13,28), 1.7, n.c, 0);
+      const hg = b.createRadialGradient(n.x,n.y,0,n.x,n.y,n.r*5); hg.addColorStop(0,`rgba(${n.c},.1)`); hg.addColorStop(1,`rgba(${n.c},0)`);
+      b.fillStyle = hg; b.beginPath(); b.arc(n.x,n.y,n.r*5,0,TAU); b.fill();
+      b.fillStyle = `rgba(${n.c},.42)`; b.beginPath(); b.arc(n.x,n.y,n.r,0,TAU); b.fill();
+      b.fillStyle = "rgba(16,13,24,.75)"; b.beginPath(); b.arc(n.x,n.y,n.r*.38,0,TAU); b.fill();   // núcleo
+    });
+    // abajo: se oscurece un poco para que resalten las siluetas
+    const fg = b.createLinearGradient(0,SB-40,0,H); fg.addColorStop(0,"rgba(11,9,17,0)"); fg.addColorStop(1,"rgba(11,9,17,.92)");
+    b.fillStyle = fg; b.fillRect(0,SB-40,W,H-SB+40);
+    // personas de perfil, algunas mirándose como en una conversación
+    heads = [];
+    const side = (W - 760)/2, centers = side > 230 ? [side/2, W - side/2] : [W/2];
+    centers.forEach((cx, j) => { const s = 58, gap = 34, y = H + 4 - 1.3*s;
+      [[cx - gap/2 - s, 1, COLS[j ? 2 : 0]], [cx + gap/2, -1, COLS[j ? 4 : 1]]].forEach(([x, dir, c]) =>
+        heads.push({x, y, s, dir, c, bx: x + (dir > 0 ? .46 : .54)*s, by: y + .42*s})); });
+    heads.forEach(h => {
+      headPath(b, h.x, h.y, h.s, h.dir);
+      const hg = b.createLinearGradient(0,h.y,0,H); hg.addColorStop(0,"#211A33"); hg.addColorStop(1,"#120E1B");
+      b.fillStyle = hg; b.fill();
+      b.save(); b.clip(); const gl = b.createRadialGradient(h.bx,h.by,0,h.bx,h.by,h.s*.55); gl.addColorStop(0,`rgba(${h.c},.2)`); gl.addColorStop(1,`rgba(${h.c},0)`);
+      b.fillStyle = gl; b.fillRect(h.x-h.s, h.y-h.s, h.s*3, h.s*3); b.restore();
+      b.strokeStyle = `rgba(${h.c},.55)`; b.lineWidth = 1.3; b.stroke();
+    });
+    bubbles = [];
+    if (reduce) heads.forEach((h,k) => { if (k % 2 === 0) bubbles.push(newBubble(h, rnd(1.5,3))); });
+    pulses = []; queue = []; N.forEach(n => n.glow = 0);
+    if (reduce){ N.forEach(n => { if (Math.random() < .2) n.glow = rnd(.4,.9); }); }
+    draw();
+  }
+  function newBubble(h, age=0){
+    return {x: h.x + (h.dir > 0 ? .85 : .15)*h.s, y: h.y - .05*h.s, ox: h.x + (h.dir > 0 ? .78 : .22)*h.s, oy: h.y + .02*h.s, dir:h.dir,
+      vx: h.dir*rnd(3,8), vy: -rnd(13,20), age, life: rnd(5.5,8), r: rnd(11,15), c: h.c, sym: pick(SYMS)};
+  }
+  function fire(i, from){
+    const n = N[i]; if (!n) return; n.glow = 1;
+    const opts = n.adj.filter(e => e !== from); if (!opts.length || pulses.length > 3) return;
+    const k = 1;
+    for (let q=0;q<k && opts.length;q++){ const e = opts.splice(Math.floor(Math.random()*opts.length),1)[0];
+      pulses.push({e, fwd: E[e].a === i, i:0, c:n.c}); }
+  }
+  function step(dt){
+    t += dt;
+    if (t >= nextFire && N.length){ const cand = N.map((n,i)=>i).filter(i=>N[i].adj.length); fire(cand[Math.floor(Math.random()*cand.length)], -1); nextFire = t + rnd(1.4,2.8); }
+    queue = queue.filter(q => { if (t >= q.at){ fire(q.i, q.from); return false; } return true; });
+    pulses = pulses.filter(p => { p.i += SPEED*dt/3; const e = E[p.e];
+      if (p.i >= e.pts.length-1){ const tg = p.fwd ? e.b : e.a; N[tg].glow = 1; if (Math.random() < .3) queue.push({i:tg, from:p.e, at:t + rnd(.08,.3)}); return false; }
+      return true; });
+    N.forEach(n => { if (n.glow > 0) n.glow = Math.max(0, n.glow - dt*1.1); });
+    if (t >= nextBubble && heads.length && bubbles.length < 2){ bubbles.push(newBubble(pick(heads))); nextBubble = t + rnd(3,5); }
+    bubbles.forEach(q => { q.age += dt; const k = Math.min(1, q.age/.8); q.x += q.vx*dt*k; q.y += q.vy*dt*k; });
+    bubbles = bubbles.filter(q => q.age < q.life);
+  }
+  function draw(){
+    ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(base,0,0); ctx.setTransform(dpr,0,0,dpr,0,0);
+    // neuronas que se encienden
+    N.forEach(n => { if (n.glow <= .01) return;
+      const R = n.r*8, gg = ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,R); gg.addColorStop(0,`rgba(${n.c},${(.5*n.glow).toFixed(3)})`); gg.addColorStop(1,`rgba(${n.c},0)`);
+      ctx.fillStyle = gg; ctx.beginPath(); ctx.arc(n.x,n.y,R,0,TAU); ctx.fill();
+      ctx.fillStyle = `rgba(${n.c},${(.6+.4*n.glow).toFixed(3)})`; ctx.beginPath(); ctx.arc(n.x,n.y,n.r*(1+.35*n.glow),0,TAU); ctx.fill(); });
+    // impulsos viajando por los axones, con estela
+    pulses.forEach(p => { const pts = E[p.e].pts, L = pts.length-1, at = j => { j = Math.max(0, Math.min(L, j)); return pts[p.fwd ? Math.round(j) : L - Math.round(j)]; };
+      for (let k=10;k>=1;k--){ const q = at(p.i - k*1.3); ctx.fillStyle = `rgba(${p.c},${(.55*(1-k/11)).toFixed(3)})`; ctx.beginPath(); ctx.arc(q[0],q[1],1.9*(1-k/14),0,TAU); ctx.fill(); }
+      const h = at(p.i), hg = ctx.createRadialGradient(h[0],h[1],0,h[0],h[1],8); hg.addColorStop(0,`rgba(${p.c},.6)`); hg.addColorStop(1,`rgba(${p.c},0)`);
+      ctx.fillStyle = hg; ctx.beginPath(); ctx.arc(h[0],h[1],8,0,TAU); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,.95)"; ctx.beginPath(); ctx.arc(h[0],h[1],1.7,0,TAU); ctx.fill(); });
+    // burbujas de pensamiento que suben y se desvanecen
+    bubbles.forEach(q => {
+      const a = Math.min(1, q.age/.6, (q.life - q.age)/1.6), g = Math.min(1, .55 + q.age*.6);
+      [[.3,3],[.6,4.6]].forEach(([f,r]) => { ctx.globalAlpha = a*.85; ctx.fillStyle = "#1E1830"; ctx.strokeStyle = `rgba(${q.c},.75)`; ctx.lineWidth = 1.2;
+        const px = q.ox + (q.x - q.ox)*f*.55, py = q.oy + (q.y - q.oy)*f*.55; ctx.beginPath(); ctx.arc(px,py,r*g,0,TAU); ctx.fill(); ctx.stroke(); });
+      ctx.globalAlpha = 1;
+      cloud(ctx, q.x, q.y, q.r*g, q.c, a);
+      sym(ctx, q.sym, q.x, q.y + q.r*g*.05, q.r*g*.55, q.c, a);
+    });
+  }
+  function loop(now){ const dt = Math.min(.05,(now-last)/1000||0); last = now; step(dt);
+    if (now-(loop.f||0) > 33){ loop.f = now; draw(); } raf = requestAnimationFrame(loop); }
+  let rt; addEventListener("resize",()=>{ clearTimeout(rt); rt=setTimeout(()=>{ if (Math.abs(innerWidth-W)>40||Math.abs(innerHeight-H)>120) build(); },200); });
+  document.addEventListener("visibilitychange",()=>{ if (document.hidden) cancelAnimationFrame(raf); else if (!reduce){ last=performance.now(); raf=requestAnimationFrame(loop); } });
+  build(); if (!reduce) raf = requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
