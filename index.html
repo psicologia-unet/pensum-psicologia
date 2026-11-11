@@ -910,7 +910,7 @@ $("rstNo").onclick = () => { $("rst").hidden = false; $("rstYes").hidden = true;
 $("rstYes").onclick = () => { S.a = new Set(); S.e = new Set(); S.x = new Set(); save(); render(); $("rstNo").onclick(); };
 
 // ---------- Cuenta: guardar en la nube con Firebase (solo en la versión publicada) ----------
-const FB_CONFIG = null;   // aquí va el bloque firebaseConfig del proyecto de Firebase de Psicología
+const FB_CONFIG = {"apiKey": "AIzaSyDIu8ipBdNNtFmHXj8tX-S5bSQU6BWav10", "authDomain": "pensum-psicologia.firebaseapp.com", "projectId": "pensum-psicologia", "storageBucket": "pensum-psicologia.firebasestorage.app", "messagingSenderId": "146849460672", "appId": "1:146849460672:web:b47dd4d57be42fa1691825"};
 const FB_V = "10.12.2";
 (function cloud(){
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(()=>{}); } catch(e){}
