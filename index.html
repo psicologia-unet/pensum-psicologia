@@ -478,7 +478,9 @@ const DATA = {"total_uc":139,"semesters":[
  {"id":"MCI","name":"Métodos Cualitativos de Investigación","pre":["MET"],"t":2,"p":2,"uc":3},
  {"id":"IEP1","name":"Instrumentos de Exploración Psicológica I","pre":["PSM"],"co":["TPER"],"t":3,"p":3,"uc":4},
  {"id":"TPER","name":"Teorías de la Personalidad","t":2,"p":0,"uc":1},
- {"id":"ENT","name":"Entrevista Psicológica","co":["IEP1"],"t":3,"p":0,"uc":2}]},
+ {"id":"ENT","name":"Entrevista Psicológica","co":["IEP1"],"t":3,"p":0,"uc":2},
+ {"id":"SSC","code":"1000001T","name":"Seminario de Servicio Comunitario","minPct":50,"extra":true,"t":0,"p":0,"uc":0},
+ {"id":"PSCOM","code":"1000002T","name":"Proyecto de Servicio Comunitario","pre":["SSC"],"extra":true,"t":0,"p":0,"uc":0}]},
 {"n":6,"courses":[
  {"id":"PYC3","name":"Psicología y Cultura III","pre":["PYC2"],"t":3,"p":0,"uc":2},
  {"id":"PSC","name":"Problemas Sociales Contemporáneos","pre":["PS3","MCI"],"t":2,"p":2,"uc":3},
@@ -486,16 +488,14 @@ const DATA = {"total_uc":139,"semesters":[
  {"id":"IEP2","name":"Instrumentos de Exploración Psicológica II","pre":["IEP1"],"t":3,"p":3,"uc":4},
  {"id":"PORG","name":"Psicología de las Organizaciones","co":["IEP2"],"t":3,"p":0,"uc":2},
  {"id":"PPAT","name":"Psicopatología","pre":["ENT"],"t":2,"p":2,"uc":3},
- {"id":"SSC","code":"1000001T","name":"Seminario de Servicio Comunitario","minPct":50,"extra":true,"t":0,"p":0,"uc":0},
- {"id":"PSCOM","code":"1000002T","name":"Proyecto de Servicio Comunitario","pre":["SSC"],"extra":true,"t":0,"p":0,"uc":0}]},
+ {"id":"SCOM","code":"1000003T","name":"Servicio Comunitario","pre":["PSCOM"],"extra":true,"t":0,"p":0,"uc":0}]},
 {"n":7,"courses":[
  {"id":"PYC4","name":"Psicología y Cultura IV","pre":["PYC3"],"t":3,"p":0,"uc":2},
  {"id":"PAMB","name":"Psicología Ambiental","t":2,"p":1,"uc":2},
  {"id":"PYE","name":"Psicología y Educación","pre":["PDF"],"t":2,"p":2,"uc":3},
  {"id":"DG1","name":"Dinámica de Grupo I","t":2,"p":0,"uc":1},
  {"id":"PC1","name":"Psicología Clínica I","pre":["PPAT"],"t":5,"p":0,"uc":3},
- {"id":"ELEC1","name":"Electiva I","elective":true,"t":2,"p":1,"uc":2},
- {"id":"SCOM","code":"1000003T","name":"Servicio Comunitario","pre":["PSCOM"],"extra":true,"t":0,"p":0,"uc":0}]},
+ {"id":"ELEC1","name":"Electiva I","elective":true,"t":2,"p":1,"uc":2}]},
 {"n":8,"courses":[
  {"id":"GPF","name":"Grandes Preguntas de la Filosofía","t":2,"p":0,"uc":1},
  {"id":"DG2","name":"Dinámica de Grupo II","pre":["DG1"],"t":1,"p":2,"uc":2},
@@ -738,7 +738,7 @@ function renderMaterias(uc){
       <div><h2>Semestre ${ROMAN[s]}</h2><div class="meta">${done.length}/${cs.length} materias · ${ucD}/${ucS} U.C.${s>=7?" + electiva":""}</div></div>
       ${MARK==="a"?`<button class="all" data-sem="${s}" data-on="${all?0:1}">${all?"Desmarcar":"Marcar todo"}</button>`:""}</div>
       <div class="list">${cs.map(row).join("")}</div>
-      ${s===7?electGroup():""}${s===6?'<p class="note">El <b>Servicio Comunitario</b> no da U.C.: el seminario se inscribe con el 50% de la carrera aprobada (70 U.C.), luego el proyecto y por último el servicio.</p>':""}</div>`;
+      ${s===7?electGroup():""}${s===5?'<p class="note">El <b>Servicio Comunitario</b> no da U.C.: el seminario se inscribe con el 50% de la carrera aprobada (70 U.C.), luego el proyecto y por último el servicio.</p>':""}</div>`;
   }
   const allDone = CORE.every(c=>c.uc===0 || S.a.has(c.key)) && electCount(S.a)>=ELECT_NEEDED;
   h += `<div class="sem"><div class="semh"><span class="chip" style="${chipStyle(10)}">X</span>
