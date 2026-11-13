@@ -1,5 +1,5 @@
 // Service worker: funciona sin internet después de la primera visita
-const CACHE = "pensum-ps-v9";
+const CACHE = "pensum-ps-v10";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icons/icon-192.png?v=2", "icons/icon-512.png?v=2",
   "icons/apple-touch-icon.png?v=2", "icons/logo-alpha.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL))); self.skipWaiting(); });
